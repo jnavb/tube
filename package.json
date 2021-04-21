@@ -26,8 +26,7 @@
     "build": "tsc -p tsconfig.release.json",
     "build:watch": "tsc -w -p tsconfig.release.json",
     "lint": "eslint . --ext .ts,.tsx",
-    "test": "jest",
-    "test:coverage": "jest --coverage",
+    "test": "jest --coverage",
     "test:watch": "jest --watchAll --silent=false",
     "poc": "npm run build && node poc.js"
   },
