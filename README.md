@@ -1,10 +1,11 @@
+# TUBE
 [![TypeScript version][ts-badge]][typescript-4-2]
-[![Node.js version][nodejs-badge]][nodejs]
 [![Build Status - Travis][travis-badge]][travis-ci]
+[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/c29a6e18767e41ed8d47c5d295305afd)](https://www.codacy.com/gh/jnavb/TUBE/dashboard?utm_source=github.com&utm_medium=referral&utm_content=jnavb/TUBE&utm_campaign=Badge_Coverage)
 ![Latest version](https://img.shields.io/github/v/release/jnavb/TUBE)
 
 
-# TUBE
+
 
 Tube is a declarative, completely unneeded, functional language that compiles into Javascript.
 
