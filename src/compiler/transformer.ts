@@ -6,7 +6,7 @@ import {
   PipeExpression,
   PipeInvocation,
   TransformedAST,
-  Visitor,
+  Visitor
 } from '../models';
 
 const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
@@ -80,36 +80,6 @@ export const transformer = (ast: AST) => {
   };
 
   const traverseWithVisitor = traverse({
-    // Number: {
-    //   enter(node: NumberLiteral, parent: FunctionExpression) {
-    //     parent.args.push(node);
-    //   },
-    // },
-    // String: {
-    //   enter(node: StringLiteral, parent: FunctionExpression) {
-    //     parent.args.push(node);
-    //   },
-    // },
-    // Method: {
-    //   enter(node: Method, parent: PipeInvocation) {
-    //     parent.childs.push(node);
-    //   },
-    // },
-    // SwitchCase: {
-    //   enter(node: SwitchCase, parent: SwitchExpression) {
-    //     parent.cases.push(node);
-    //   },
-    // },
-    // SwitchExpression: {
-    //   enter(node: SwitchExpression, parent: PipeExpression) {
-    //     parent.childs.push(node);
-    //   },
-    // },
-    // SideEffect: {
-    //   enter(node: SideEffect, parent: PipeExpression) {
-    //     parent.childs.push(node);
-    //   },
-    // },
     PipeExpression: {
       enter(node: PipeExpression, _: AST) {
         newAst.pipeExpressions.push(node);
