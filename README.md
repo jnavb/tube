@@ -9,7 +9,7 @@
 
 Tube is a declarative, completely unneeded, functional language that compiles into Javascript.
 
-## History
+## Motivation
 
 After reading the amazing [super tiny compiler](https://github.com/jamiebuilds/the-super-tiny-compiler) repository I became more interested about compilers. The idea of build one yourself for a made up language kept growing and this is the result.
 
@@ -26,7 +26,7 @@ This project is still on early stages, you can get a grasp running `node run poc
 
 ### May 2021
 
-:black_square_button:  NPM package
+:white_check_mark:  NPM package
 
 :black_square_button:  Web Editor 
 
