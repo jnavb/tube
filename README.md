@@ -22,7 +22,9 @@ This project is still on early stages, you can get a grasp running `node run poc
 
 :white_check_mark:  Compiler
 
-:black_square_button:  Test coverage 100%
+:white_check_mark:  Test coverage 100%
+
+:black_square_button:  NPM package
 
 :black_square_button:  Web Editor 
 

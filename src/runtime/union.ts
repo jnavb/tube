@@ -1,12 +1,29 @@
-export const union = (...fns) => (x) =>
-  fns
+export const union = (...fns) => (x) => {
+  const supportedTypes = new Set([
+    'string',
+    'object',
+    'boolean',
+    'number',
+    'bigint',
+  ]);
+
+  return fns
     .map((f) => f(x))
     .reduce((acc, value) => {
-      if (typeof value === 'undefined') {
+      if (value == undefined) {
         return acc;
       }
 
-      if (typeof acc !== typeof value) {
+      if (!supportedTypes.has(typeof acc) || !supportedTypes.has(typeof value)) {
+        throw new Error(
+          `Type ${typeof value} as returning type of a union expression, not supported`,
+        );
+      }
+
+      if (
+        typeof acc !== typeof value ||
+        Array.isArray(acc) !== Array.isArray(value)
+      ) {
         throw new Error('Mismatch between returning types of union expression');
       }
 
@@ -22,8 +39,5 @@ export const union = (...fns) => (x) =>
       if (typeof value === 'number' || typeof value === 'bigint') {
         return acc + value;
       }
-
-      throw new Error(
-        `Type ${typeof value} as returning type of a union expression, not supported`,
-      );
     });
+};

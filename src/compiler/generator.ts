@@ -73,9 +73,6 @@ const _generator = (node: Node): string => {
 
       return fn;
 
-    case 'FunctionInvocation':
-      return `${node.value}(x)`;
-
     case 'UnionExpression':
       return `${runtimeNames.union}(${node.childs.map(_generator).join(', ')})`;
 
@@ -95,7 +92,7 @@ const _generator = (node: Node): string => {
       return `x => x.${node.value}(${args})`;
 
     default:
-      throw new SyntaxError(node.type);
+      throw new SyntaxError(node.type + ' node type not supported');
   }
 };
 

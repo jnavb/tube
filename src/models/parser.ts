@@ -8,7 +8,6 @@ export type NodeType =
   | 'Method'
   | 'Function'
   | 'FunctionCurried'
-  | 'FunctionInvocation'
   | 'CurryExpression'
   | 'UnionExpression'
   | 'SwitchExpression'
