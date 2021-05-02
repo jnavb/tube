@@ -601,6 +601,30 @@ describe('AST: common cases', () => {
 
     expect(result).toStrictEqual(desired);
   });
+
+  it('should throw an error when is an unkown token', () => {
+    const input: Token[] = [
+      { type: 'TypeNotSupported' as any, value: 'fnOne' },
+    ];
+
+    expect(() => parser(input)).toThrowError(
+      `token type not supported`,
+    );
+  });
+
+  it('should throw an error when is an unkown token', () => {
+    const input: Token[] = [
+      { type: 'NewLine', level: 0 },
+      { type: 'Arrow' },
+      { type: 'Negation', value: 'fnPipe' },
+      { type: 'Function', value: 'fnOne' },
+      { type: 'NewLine', level: 1 },
+    ];
+
+    expect(() => parser(input)).toThrowError(
+      `Invalid PipeExpression format`,
+    );
+  });
 });
 
 describe('AST: edge cases for NewLine and EmptyLine', () => {

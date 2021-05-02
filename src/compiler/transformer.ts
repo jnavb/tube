@@ -26,34 +26,34 @@ const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
     }
   }
 
-  function exploreChilds(n: Node) {
-    switch (n.type) {
+  function exploreChilds(node: Node) {
+    switch (node.type) {
       case 'Program':
       case 'PipeExpression':
       case 'PipeInvocation':
       case 'UnionExpression':
-        n.childs.forEach((child) => {
-          traverseNode(child, n);
+        node.childs.forEach((child) => {
+          traverseNode(child, node);
         });
         break;
 
       case 'Function':
-        if (n.args) {
-          n.args.forEach((child) => {
-            traverseNode(child, n);
+        if (node.args) {
+          node.args.forEach((child) => {
+            traverseNode(child, node);
           });
         }
-        if (n.if) {
-          traverseNode(n.if, n);
+        if (node.if) {
+          traverseNode(node.if, node);
         }
-        if (n.else) {
-          traverseNode(n.else, n);
+        if (node.else) {
+          traverseNode(node.else, node);
         }
         break;
 
       case 'SwitchExpression':
-        n.cases.forEach((child) => {
-          traverseNode(child, n);
+        node.cases.forEach((child) => {
+          traverseNode(child, node);
         });
         break;
 
@@ -66,7 +66,7 @@ const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
         break;
 
       default:
-        throw new SyntaxError(n.type);
+        throw new SyntaxError(node.type + ' node type not supported');
     }
   }
 };

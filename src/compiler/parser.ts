@@ -1,16 +1,16 @@
 import {
-  AST,
-  FunctionExpression,
-  Method,
-  Node,
-  NumberLiteral,
-  PipeExpression,
-  PipeInvocation,
-  StringLiteral,
-  SwitchCase,
-  SwitchExpression,
-  Token,
-  Variable,
+    AST,
+    FunctionExpression,
+    Method,
+    Node,
+    NumberLiteral,
+    PipeExpression,
+    PipeInvocation,
+    StringLiteral,
+    SwitchCase,
+    SwitchExpression,
+    Token,
+    Variable
 } from '../models';
 
 export const parser = (tokens: Token[]): AST => {
@@ -250,19 +250,4 @@ export const parser = (tokens: Token[]): AST => {
 
     throw new SyntaxError(token.type + ' token type not supported');
   }
-};
-
-/* Translates a graph-like token list based on indents to his computing graph */
-export const DFTokensToGraph = (tokens: []) => {
-  const res = { childs: [] };
-  const pointerByLevel = [res];
-  tokens.forEach((n) => {
-    let node = { l: n, childs: [] };
-    let level = Math.max(n - 1, 0);
-    let parent = pointerByLevel[level];
-    parent.childs.push(node);
-    pointerByLevel[n] = node;
-  });
-
-  return res;
 };

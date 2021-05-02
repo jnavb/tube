@@ -380,6 +380,27 @@ fnThree
 
     expect(result).toStrictEqual(desired);
   });
+
+  it('should reject an invalid character', () => {
+    const input = `
+fnOne
+fnTwo
+-fnThree
+`;
+
+    expect(() => tokenizer(input)).toThrowError(
+      `Unable to parse character '-'`,
+    );
+  });
+
+  it('should reject an invalid indent', () => {
+    const input = `
+fnOne
+  : fnThree
+`;
+
+    expect(() => tokenizer(input)).toThrowError(`Incorrect indenting format`);
+  });
 });
 
 describe('Tokenizer: edge cases for methods', () => {
@@ -391,7 +412,7 @@ fnTwo
 `;
 
     expect(() => tokenizer(input)).toThrowError(
-      `Line 3 Char 2 🔴 Method invocation not allowed with empty spaces after '::'`,
+      `Method invocation not allowed with empty spaces after '::'`,
     );
   });
 });
@@ -421,7 +442,7 @@ fnTwo
 `;
 
     expect(() => tokenizer(input)).toThrowError(
-      `Line 3 Char 14 🔴 Side effect clause not closed`,
+      `Side effect clause not closed`,
     );
   });
 
@@ -433,7 +454,7 @@ fnTwo
 `;
 
     expect(() => tokenizer(input)).toThrowError(
-      `Line 3 Char 2 🔴 Side effect call format not allowed`,
+      `Side effect call format not allowed`,
     );
   });
 
@@ -445,7 +466,7 @@ fnTwo
 `;
 
     expect(() => tokenizer(input)).toThrowError(
-      `Line 3 Char 14 🔴 Side effect call format not allowed`,
+      `Side effect call format not allowed`,
     );
   });
 
@@ -457,7 +478,7 @@ aint aint console.log
 `;
 
       expect(() => tokenizer(input)).toThrowError(
-        `Line 2 Char 9 🔴 More than one sucesive negation not allowed`,
+        `More than one sucesive negation not allowed`,
       );
     });
   });
@@ -592,7 +613,7 @@ fnOne
     expect(result).toStrictEqual(desired);
   });
 
-  it('tokenize a pipe invocation with a brancher', () => {
+  it('tokenize a pipe invocation with an invalid indentation for a brancher', () => {
     const input = `
 fnOne
 fnTwo
@@ -602,7 +623,80 @@ fnFive
 `;
 
     expect(() => tokenizer(input)).toThrowError(
-      `Line 3 Char 1 🔴 Invalid indentation for a conditional clause`,
+      `Invalid indentation for a conditional clause`,
     );
+  });
+
+  describe('Tokenizer: edge cases for union clauses', () => {
+    it('should throw an error when have more than one space after union declaration', () => {
+      const input = `
+fnOne
+fnTwo with 1
+    U fnUnionA
+    U  fnUnionB
+`;
+
+      expect(() => tokenizer(input)).toThrowError(
+        `Union expression not allowed with more than one space after union keyword U`,
+      );
+    });
+
+    it('should throw an error when union isn´t indented', () => {
+      const input = `
+fnOne
+fnTwo with 1
+U fnUnionA
+U fnUnionB
+`;
+
+      expect(() => tokenizer(input)).toThrowError(
+        `Invalid indentation for a union clause`,
+      );
+    });
+  });
+
+  describe('Tokenizer: edge cases for switch clauses', () => {
+    it('should throw an error when doesn´t have one space after switch declaration', () => {
+      const input = `
+fnOne
+fnTwo
+    : isA :fnA
+    : isB : fnB
+`;
+
+      expect(() => tokenizer(input)).toThrowError(
+        `Switch clause not allowed without one space after case declaration`,
+      );
+    });
+
+  });
+
+  describe('Tokenizer: edge cases for switch clauses', () => {
+    it('should throw an error when brancher has less than one space', () => {
+      const input = `
+fnOne
+fnTwo
+    :fnA
+    : fnB
+`;
+
+      expect(() => tokenizer(input)).toThrowError(
+        `Brancher invocation not allowed without one space after brancher declaration`,
+      );
+    });
+
+    it('should throw an error when brancher has more than one space', () => {
+      const input = `
+fnOne
+fnTwo
+    :  fnA
+    : fnB
+`;
+
+      expect(() => tokenizer(input)).toThrowError(
+        `Brancher invocation not allowed with more than one space after brancher declaration`,
+      );
+    });
+
   });
 });

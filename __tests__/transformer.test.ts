@@ -449,4 +449,20 @@ describe('Transformer: common cases', () => {
 
     expect(result).toStrictEqual(desired);
   });
+
+  it('should throw an error when is an unkown node type', () => {
+    const input: AST = {
+      type: 'Program',
+      childs: [
+        {
+          type: 'UnkownNodeType' as any,
+          childs: [],
+        },
+      ],
+    };
+
+    expect(() => transformer(input)).toThrowError(
+      `node type not supported`,
+    );
+  });
 });

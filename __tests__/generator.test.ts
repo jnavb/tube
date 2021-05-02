@@ -327,4 +327,17 @@ ${runtimeNames.pipe}(fnOne, __tube_curried_fnTwo(1), ${runtimeNames.union}(fnUni
 
     expect(result).toEqual(desired);
   });
+
+  it('should throw an error when is an unkown node type', () => {
+    const input: TransformedAST = {
+      type: 'Program',
+      curriedFns: [{ type: 'UnkownNodeType' as any, value: 'fnTwo' }],
+      pipeExpressions: [],
+      pipeInvocations: [],
+    };
+
+    expect(() => generator(input)).toThrowError(
+      `node type not supported`,
+    );
+  });
 });

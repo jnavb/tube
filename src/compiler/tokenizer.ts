@@ -26,7 +26,7 @@ export const tokenizer = (input: string): Token[] => {
     while (current < input.length) {
       let LAST_TOKEN = tokens[tokens.length - 1];
 
-      let char = input[current] || '';
+      let char = input[current];
       let nextChar = input[current + 1] || '';
       let charAndNextChar = char + nextChar;
 
