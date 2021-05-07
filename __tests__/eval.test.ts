@@ -34,6 +34,7 @@ const isString = (v: any): v is string => typeof v === 'string';
 const isArray = (v: any): v is unknown[] => Array.isArray(v);
 const isEmpty = (v: unknown[]) => Boolean(v.length);
 const noop = (v) => v;
+const booleanFactory = (v: boolean) => () => v
 
 const append = (str: string) => (v: string) => v + str;
 const appendHello = append('hello');
@@ -322,6 +323,23 @@ mockState
       const desired = eval(jsCode);
 
       expect(result).toEqual(true);
+      expect(result).toStrictEqual(desired);
+    });
+
+    it('evaluates an function with boolean primitives', () => {
+      const input = `
+booleanFactory false
+`;
+
+      const compiledCode = compile(input);
+      const jsCode = `
+      booleanFactory(false)()
+      `;
+
+      const result = eval(compiledCode);
+      const desired = eval(jsCode);
+
+      expect(result).toEqual(false);
       expect(result).toStrictEqual(desired);
     });
 
