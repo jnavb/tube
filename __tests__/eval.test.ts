@@ -31,6 +31,7 @@ const getFalse = () => false;
 const getNull = () => null;
 const getUndefined = () => undefined;
 const pick = (props) => obj => props.split('.').reduce((acc, v) => acc[v], obj)
+const pickArityUndetermined = (...props) => obj => props.reduce((acc, v) => acc[v], obj)
 const isGreaterThanZero = n => n > 0
 const isLessThanZero = n => n < 0
 
@@ -669,4 +670,24 @@ pick 'c'
     expect(result).toEqual(1);
     expect(result).toStrictEqual(expected);
   });
+
+  it('evaluates a pipe with a function with undeterminated arity', () => {
+    const input = `
+state
+pickArityUndetermined ... 'n1'
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    let res = pickArityUndetermined('n1')(state())
+    res;
+    `;
+
+    const result = eval(compiledCode);
+    const desired = eval(jsCode);
+
+    expect(result).toEqual(1);
+    expect(result).toStrictEqual(desired);
+  });
+
 });

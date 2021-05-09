@@ -1,5 +1,6 @@
 import {
   AST,
+  DisableAutoCurrying,
   FunctionStatement,
   Method,
   Node,
@@ -172,8 +173,16 @@ export const parser = (tokens: Token[]): AST => {
       token = tokens[++current];
 
       while (token && token.type !== 'NewLine' && token.type !== 'EmptyLine') {
-        const args = walk() as NumberLiteral | StringLiteral | Variable;
-        args && fnNode.args.push(args);
+        const args = walk() as
+          | NumberLiteral
+          | StringLiteral
+          | Variable
+          | DisableAutoCurrying;
+        if (args.type === 'DisableAutoCurrying') {
+          fnNode.disableAutoCurrying = true;
+        } else {
+          args && fnNode.args.push(args);
+        }
         token = tokens[current];
       }
 
@@ -266,6 +275,14 @@ export const parser = (tokens: Token[]): AST => {
       return {
         type: 'SideEffect',
         ...(token.value && { value: token.value }),
+      };
+    }
+
+    if (token.type === 'DisableAutoCurrying') {
+      current++;
+
+      return {
+        type: 'DisableAutoCurrying'
       };
     }
 

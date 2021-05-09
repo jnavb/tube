@@ -14,6 +14,7 @@ export const tokenizer = (input: string): Token[] => {
   let BREAK_LINE = '\r\n';
   let ARROW = /->/;
   let UNION = /U/;
+  let DISABLE_AUTO_CURRY = /\.\.\./;
 
   let level = 0;
   let line = 0;
@@ -29,7 +30,18 @@ export const tokenizer = (input: string): Token[] => {
 
       let char = input[current];
       let nextChar = input[current + 1] || '';
+      let nextOfNextChar = input[current + 2] || '';
       let charAndNextChar = char + nextChar;
+
+      // Disable auto currying
+      if (DISABLE_AUTO_CURRY.test(char + nextChar + nextOfNextChar)) {
+        current = current + 3;
+        tokens.push({
+          type: 'DisableAutoCurrying',
+        });
+
+        continue;
+      }
 
       // Method
       if (DOUBLE_COLON.test(char + nextChar)) {

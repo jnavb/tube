@@ -13,7 +13,8 @@ export type Token = {
     | 'Union'
     | 'Variable'
     | 'NewLine'
-    | 'EmptyLine';
+    | 'EmptyLine'
+    | 'DisableAutoCurrying';
   value?: string;
   level?: number;
   case?: string;

@@ -12,7 +12,8 @@ export type NodeType =
   | 'SwitchStatement'
   | 'SwitchCase'
   | 'DefaultSwitchCase'
-  | 'SideEffect';
+  | 'SideEffect'
+  | 'DisableAutoCurrying';
 export interface Node {
   type: NodeType;
   value?: string;
@@ -24,6 +25,7 @@ export interface Node {
   cases?: SwitchCase[];
   default?: SwitchCase;
   predicate?: string;
+  disableAutoCurrying?: boolean;
 }
 
 export interface AST extends Node {
@@ -48,6 +50,7 @@ export interface FunctionStatement extends Node {
   negated?: boolean;
   if?: FunctionStatement;
   else?: FunctionStatement;
+  disableAutoCurrying?: boolean;
 }
 
 export interface UnionStatement extends Node {
@@ -90,4 +93,8 @@ export interface SwitchCase extends Node {
   type: 'SwitchCase' | 'DefaultSwitchCase';
   predicate: string;
   value: string;
+}
+
+export interface DisableAutoCurrying extends Node {
+  type: 'DisableAutoCurrying';
 }

@@ -52,11 +52,14 @@ const _generator = (node: Node): string => {
     case 'Function':
       let fn = '';
       args = node.args?.map(_generator).join(', ') || '';
+      const invocation = args
+        ? `(${args})`
+        : '';
 
-      if (args) {
-        fn = `${getNameOfFunctionCurried(node.value)}(${args})`;
+      if (!args || node.disableAutoCurrying) {
+        fn = `${node.value}${invocation}`;
       } else {
-        fn = `${node.value}`;
+        fn = `${getNameOfFunctionCurried(node.value)}${invocation}`;
       }
 
       if (node.negated) {
