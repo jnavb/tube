@@ -10,11 +10,11 @@ fnThree
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 ${runtimeNames.pipe}(fnOne, fnTwo, fnThree)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe invocation with pipe statement and a pipe invocation', () => {
@@ -31,12 +31,12 @@ fnABC
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 const fnABC = ${runtimeNames.pipe}(fnA, fnB, fnC);
 ${runtimeNames.pipe}(fnOne, fnTwo, fnThree, fnABC)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe invocation with a method', () => {
@@ -48,11 +48,11 @@ fnThree
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 ${runtimeNames.pipe}(fnOne, fnTwo, fnThree, x => x.toString())();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe invocation with a method with arguments', () => {
@@ -64,11 +64,11 @@ fnThree
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 ${runtimeNames.pipe}(fnOne, fnTwo, fnThree, x => x.map(ids))();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe invocation with a side effect', () => {
@@ -81,11 +81,11 @@ fnFour
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 ${runtimeNames.pipe}(fnOne, fnTwo, fnThree, ${runtimeNames.sideEffect}(console.log), fnFour)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe invocation with a function negation', () => {
@@ -97,11 +97,11 @@ fnFour
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 ${runtimeNames.pipe}(fnOne, fnTwo, ${runtimeNames.negate}(fnThree), fnFour)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe invocation with a function with arguments', () => {
@@ -112,12 +112,12 @@ fnThree
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 const __tube_curried_fnTwo = ${runtimeNames.curry}(fnTwo);
 ${runtimeNames.pipe}(fnOne, __tube_curried_fnTwo('str1', var2, 3), fnThree)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles several pipe invocations with nested if else clauses', () => {
@@ -140,12 +140,12 @@ fnFour
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 ${runtimeNames.pipe}(fnOne, fnTwo, x => fnThree(x) ? (fn1A)(x) : (fn1B)(x), fnFour)();
 ${runtimeNames.pipe}(fnOne, fnTwo, x => fnThree(x) ? (x => fn1A(x) ? (fn2A)(x) : (fn2B)(x))(x) : (fn1B)(x), fnFour)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe invocation with union statement', () => {
@@ -159,12 +159,12 @@ fnThree
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 const __tube_curried_fnTwo = ${runtimeNames.curry}(fnTwo);
 ${runtimeNames.pipe}(fnOne, __tube_curried_fnTwo(1), ${runtimeNames.union}(fnUnionA, fnUnionB, fnUnionC), fnThree)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe statement with only union statement', () => {
@@ -179,12 +179,12 @@ fnPipeA
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 const fnPipeA = ${runtimeNames.pipe}(${runtimeNames.union}(fnUnionA, fnUnionB, fnUnionC));
 ${runtimeNames.pipe}(state, fnPipeA)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe invocation with pipe statements and pipe invocations', () => {
@@ -217,7 +217,7 @@ divide by 3
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 const __tube_curried_match = ${runtimeNames.curry}(match);
 const __tube_curried_divide = ${runtimeNames.curry}(divide);
 const fnPipeA = ${runtimeNames.pipe}(fnOneA, fnTwoA, fnThreeA);
@@ -225,7 +225,7 @@ const fnPipeB = ${runtimeNames.pipe}(fnOneB, fnTwoB, fnThreeB);
 ${runtimeNames.pipe}(state, toSomething, sum, oneHundredOrMore, x => x.toString(), x => x.concat(), __tube_curried_match('hello'), trace, x => ${runtimeNames.negate}(allUppercase)(x) ? (fnOne)(x) : (fnTwo)(x), trace, ${runtimeNames.sideEffect}(console.log), JSON.stringify, __tube_curried_divide(3))();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe invocation with a switch block', () => {
@@ -238,12 +238,12 @@ pick 'n1'
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 const __tube_curried_pick = ${runtimeNames.curry}(pick);
 ${runtimeNames.pipe}(state, __tube_curried_pick('n1'), x => isGreaterThanZero(x) ? addFour(x) : isLessThanZero(x) ? addOne(x) : isZero(x) ? addThree(x) : x)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe invocation with a switch block and a default clause', () => {
@@ -256,12 +256,12 @@ pick 'n1'
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 const __tube_curried_pick = ${runtimeNames.curry}(pick);
 ${runtimeNames.pipe}(state, __tube_curried_pick('n1'), x => isGreaterThanZero(x) ? addFour(x) : isLessThanZero(x) ? addOne(x) : addThree(x))();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('compiles a pipe invocation with a switch block and a standalone default clause', () => {
@@ -272,11 +272,11 @@ pick 'n1'
 `;
 
     const result = compile(input);
-    const desired = `
+    const expected = `
 const __tube_curried_pick = ${runtimeNames.curry}(pick);
 ${runtimeNames.pipe}(state, __tube_curried_pick('n1'), x => addThree(x))();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 });

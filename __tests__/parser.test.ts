@@ -14,7 +14,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -37,7 +37,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse a pipe invocation with a method with arguments', () => {
@@ -55,7 +55,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired = {
+    const expected = {
       type: 'Program',
       childs: [
         {
@@ -77,7 +77,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse two pipes of functions', () => {
@@ -94,7 +94,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -126,7 +126,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse a pipe with functions, side-effects, methods...', () => {
@@ -158,7 +158,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -180,7 +180,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse string, number and variable arguments', () => {
@@ -203,7 +203,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -237,7 +237,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse a switch block', () => {
@@ -265,7 +265,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -295,7 +295,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse multiple nested if/else blocks', () => {
@@ -317,7 +317,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -346,7 +346,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse if/else blocks with args', () => {
@@ -373,7 +373,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -414,7 +414,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse a pipe statement', () => {
@@ -432,7 +432,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -447,7 +447,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse two pipe statements', () => {
@@ -473,7 +473,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -497,7 +497,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse a pipe statement and a pipe invocation', () => {
@@ -521,7 +521,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -553,7 +553,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse a union statement', () => {
@@ -577,7 +577,7 @@ describe('AST: common cases', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -599,7 +599,7 @@ describe('AST: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should throw an error when is an unkown token', () => {
@@ -635,7 +635,7 @@ describe('AST: edge cases for NewLine and EmptyLine', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -650,14 +650,14 @@ describe('AST: edge cases for NewLine and EmptyLine', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse without a starting and final EmptyLine', () => {
     const input: Token[] = [{ type: 'Function', value: 'fnOne' }];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -672,7 +672,7 @@ describe('AST: edge cases for NewLine and EmptyLine', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse with multiple NewLines', () => {
@@ -685,7 +685,7 @@ describe('AST: edge cases for NewLine and EmptyLine', () => {
     ];
 
     const result = parser(input);
-    const desired: AST = {
+    const expected: AST = {
       type: 'Program',
       childs: [
         {
@@ -700,6 +700,6 @@ describe('AST: edge cases for NewLine and EmptyLine', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 });

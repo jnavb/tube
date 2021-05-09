@@ -10,7 +10,7 @@ fnThree
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
@@ -20,7 +20,7 @@ fnThree
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize a pipe declaration with functions', () => {
@@ -32,7 +32,7 @@ fnThree
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Arrow' },
       { type: 'Function', value: 'fnPipe' },
@@ -45,7 +45,7 @@ fnThree
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize a pipe invocation with a method', () => {
@@ -57,7 +57,7 @@ fnThree
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
@@ -69,7 +69,7 @@ fnThree
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize a pipe invocation with a method with arguments', () => {
@@ -80,7 +80,7 @@ fnTwo
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
@@ -93,7 +93,7 @@ fnTwo
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize a pipe invocation with a side effect', () => {
@@ -106,7 +106,7 @@ fnFour
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
@@ -120,7 +120,7 @@ fnFour
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize a pipe invocation with a function negation', () => {
@@ -132,7 +132,7 @@ fnFour
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
@@ -145,7 +145,7 @@ fnFour
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize a pipe invocation with a brancher', () => {
@@ -158,7 +158,7 @@ fnFive
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
@@ -172,7 +172,7 @@ fnFive
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize several pipe invocations', () => {
@@ -193,7 +193,7 @@ fnSix
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
@@ -221,7 +221,7 @@ fnSix
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize a pipe invocation with a function call with variable as arg', () => {
@@ -232,7 +232,7 @@ fnThree
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
@@ -245,7 +245,7 @@ fnThree
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize several pipe invocations with all the language features', () => {
@@ -272,7 +272,7 @@ fnTwo
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'state' },
       { type: 'NewLine', level: 0 },
@@ -315,7 +315,7 @@ fnTwo
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize a pipe invocation with a switch block', () => {
@@ -329,7 +329,7 @@ fnTwo
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
@@ -345,7 +345,7 @@ fnTwo
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize a pipe invocation with a union block', () => {
@@ -359,7 +359,7 @@ fnThree
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
@@ -378,7 +378,7 @@ fnThree
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should reject an invalid character', () => {
@@ -492,7 +492,7 @@ JSON.stringify
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'state' },
       { type: 'NewLine', level: 0 },
@@ -500,7 +500,7 @@ JSON.stringify
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse function with number', () => {
@@ -510,7 +510,7 @@ fn1
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'state' },
       { type: 'NewLine', level: 0 },
@@ -518,7 +518,7 @@ fn1
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse function with uppercase letters', () => {
@@ -528,7 +528,7 @@ fnONE
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'state' },
       { type: 'NewLine', level: 0 },
@@ -536,7 +536,7 @@ fnONE
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 });
 
@@ -546,12 +546,12 @@ describe('Tokenizer: misc edge cases', () => {
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should parse a pipe invocation without break line at the end of the script', () => {
@@ -560,13 +560,13 @@ fnOne
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 });
 
@@ -579,7 +579,7 @@ fnOne
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 1 },
@@ -589,7 +589,7 @@ fnOne
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize a indentation with tabs', () => {
@@ -600,7 +600,7 @@ fnOne
 `;
 
     const result = tokenizer(input);
-    const desired: Token[] = [
+    const expected: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
       { type: 'NewLine', level: 1 },
@@ -610,7 +610,7 @@ fnOne
       { type: 'NewLine', level: 0 },
     ];
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('tokenize a pipe invocation with an invalid indentation for a brancher', () => {
