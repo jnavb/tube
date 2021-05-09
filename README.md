@@ -7,15 +7,32 @@
 
 
 
-Tube is a declarative, completely unneeded, functional language that compiles into Javascript.
+Tube is a declarative, auto-curried, completely unneeded, functional language that compiles into Javascript.
 
 ## Motivation
 
 After reading the amazing [super tiny compiler](https://github.com/jamiebuilds/the-super-tiny-compiler) repository I became more interested about compilers. The idea of build one yourself for a made up language kept growing and this is the result.
 
-## Getting Started
+It is a subset of Javascript, you still need some JS code in order to work.
 
-This project is still on early stages, you can get a grasp running `node run poc` and playing around.
+## Installation
+
+
+```shell
+$ npm i -g npm
+$ npm i lodash
+```
+
+## Usage
+
+```js
+const __tube_lang__ = require('tube-lang')
+
+const jsCode = a.compile(tubeCode)
+
+eval(jsCode)
+```
+
 ## Roadmap
 
 ### April 2021
