@@ -207,4 +207,56 @@ ${runtimeNames.pipe}(state, toSomething, sum, oneHundredOrMore, x => x.toString(
 
     expect(result).toEqual(desired);
   });
+
+  it('compiles a pipe invocation with a switch block', () => {
+    const input = `
+state
+pick 'n1'
+    : isGreaterThanZero : addFour
+    : isLessThanZero : addOne
+    : isZero : addThree
+`;
+
+    const result = compile(input);
+    const desired = `
+const __tube_curried_pick = ${runtimeNames.curry}(pick);
+${runtimeNames.pipe}(state, __tube_curried_pick('n1'), x => isGreaterThanZero(x) ? addFour(x) : isLessThanZero(x) ? addOne(x) : isZero(x) ? addThree(x) : x)();
+`;
+
+    expect(result).toEqual(desired);
+  });
+
+  it('compiles a pipe invocation with a switch block and a default clause', () => {
+    const input = `
+state
+pick 'n1'
+    : isGreaterThanZero : addFour
+    : default : addThree
+    : isLessThanZero : addOne
+`;
+
+    const result = compile(input);
+    const desired = `
+const __tube_curried_pick = ${runtimeNames.curry}(pick);
+${runtimeNames.pipe}(state, __tube_curried_pick('n1'), x => isGreaterThanZero(x) ? addFour(x) : isLessThanZero(x) ? addOne(x) : addThree(x))();
+`;
+
+    expect(result).toEqual(desired);
+  });
+
+  it('compiles a pipe invocation with a switch block and a standalone default clause', () => {
+    const input = `
+state
+pick 'n1'
+    : default : addThree
+`;
+
+    const result = compile(input);
+    const desired = `
+const __tube_curried_pick = ${runtimeNames.curry}(pick);
+${runtimeNames.pipe}(state, __tube_curried_pick('n1'), x => addThree(x))();
+`;
+
+    expect(result).toEqual(desired);
+  });
 });

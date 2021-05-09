@@ -73,6 +73,20 @@ const _generator = (node: Node): string => {
 
       return fn;
 
+    case 'SwitchExpression':
+      const cases = node.cases.map(_generator).join(' : ');
+      const defaultClause = node.default
+        ? `${node.default.value}(x)`
+        : 'x'
+      const switchFn = cases
+        ? `x => ${cases} : ${defaultClause}`
+        : `x => ${defaultClause}`
+
+      return switchFn;
+    
+    case 'SwitchCase':
+      return `${node.case}(x) ? ${node.value}(x)`;
+
     case 'UnionExpression':
       return `${runtimeNames.union}(${node.childs.map(_generator).join(', ')})`;
 
@@ -92,7 +106,7 @@ const _generator = (node: Node): string => {
       return `x => x.${node.value}(${args})`;
 
     default:
-      throw new SyntaxError(node.type + ' node type not supported');
+      throw new SyntaxError(node.type + ' type not supported');
   }
 };
 
