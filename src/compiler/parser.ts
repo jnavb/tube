@@ -1,14 +1,15 @@
 import {
   AST,
-  FunctionExpression,
+  FunctionStatement,
   Method,
   Node,
   NumberLiteral,
-  PipeExpression,
-  PipeInvocation,
+
+  PipeInvocation, PipeStatement,
+
   StringLiteral,
   SwitchCase,
-  SwitchExpression,
+  SwitchStatement,
   Token,
   Variable
 } from '../models';
@@ -16,9 +17,9 @@ import {
 export const parser = (tokens: Token[]): AST => {
   let current = 0;
   let currentLevel = 0;
-  let nodeByLevel: FunctionExpression[] = [];
+  let nodeByLevel: FunctionStatement[] = [];
   let insidePipeInvocation = false;
-  let insidePipeExpression = false;
+  let insidePipeStatement = false;
   let insideSwitch = false;
   let insideUnion = false;
 
@@ -57,7 +58,7 @@ export const parser = (tokens: Token[]): AST => {
       }
 
       const unionNode: any = {
-        type: 'UnionExpression',
+        type: 'UnionStatement',
         childs: [],
       };
 
@@ -88,15 +89,15 @@ export const parser = (tokens: Token[]): AST => {
         return switchCase;
       }
 
-      let switchExpression: SwitchExpression = {
-        type: 'SwitchExpression',
+      let switchStatement: SwitchStatement = {
+        type: 'SwitchStatement',
         cases: [],
       };
 
       if (token.type === 'SwitchCase') {
-        switchExpression.cases.push(switchCase);
+        switchStatement.cases.push(switchCase);
       } else if (token.type === 'DefaultSwitchCase') {
-        switchExpression.default = switchCase;
+        switchStatement.default = switchCase;
       }
 
       insideSwitch = true;
@@ -110,9 +111,9 @@ export const parser = (tokens: Token[]): AST => {
         const type = switchCase?.type;
 
         if (type === 'SwitchCase') {
-          switchExpression.cases.push(switchCase);
+          switchStatement.cases.push(switchCase);
         } else if (type === 'DefaultSwitchCase') {
-          switchExpression.default = switchCase;
+          switchStatement.default = switchCase;
         }
 
         token = tokens[current];
@@ -120,7 +121,7 @@ export const parser = (tokens: Token[]): AST => {
 
       insideSwitch = false;
 
-      return switchExpression;
+      return switchStatement;
     }
 
     if (token.type === 'Negation') {
@@ -132,31 +133,31 @@ export const parser = (tokens: Token[]): AST => {
       token = tokens[++current];
 
       if (token.type !== 'Function') {
-        throw new Error('Invalid PipeExpression format');
+        throw new Error('Invalid PipeStatement format');
       }
 
-      let pipeExpression: PipeExpression = {
-        type: 'PipeExpression',
+      let pipeStatement: PipeStatement = {
+        type: 'PipeStatement',
         value: token.value,
         childs: [],
       };
 
-      insidePipeExpression = true;
+      insidePipeStatement = true;
       current++;
 
       while (token && token.type !== 'EmptyLine') {
         const child = walk();
-        child && pipeExpression.childs.push(child);
+        child && pipeStatement.childs.push(child);
         token = tokens[current];
       }
 
-      insidePipeExpression = false;
+      insidePipeStatement = false;
 
-      return pipeExpression;
+      return pipeStatement;
     }
 
     if (token.type === 'Function') {
-      let fnNode: FunctionExpression = {
+      let fnNode: FunctionStatement = {
         type: 'Function',
         value: token.value,
         args: [],
@@ -179,12 +180,12 @@ export const parser = (tokens: Token[]): AST => {
 
       /*
         Is an if/else block if indentation is greater than initial indendation:
-        1 for pipeExpressions due initial indendation
-        1 for unionExpressions due initial indendation
+        1 for pipeStatements due initial indendation
+        1 for unionStatements due initial indendation
         0 for pipeInvocations
       */
       nodeByLevel[currentLevel] = fnNode;
-      const baseLevel = insidePipeExpression || insideUnion ? 1 : 0;
+      const baseLevel = insidePipeStatement || insideUnion ? 1 : 0;
       if (currentLevel > baseLevel) {
         let parentLevel = currentLevel - 1;
 
@@ -197,7 +198,7 @@ export const parser = (tokens: Token[]): AST => {
         return null;
       }
 
-      if (insidePipeInvocation || insidePipeExpression) {
+      if (insidePipeInvocation || insidePipeStatement) {
         return fnNode;
       }
 

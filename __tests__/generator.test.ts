@@ -33,7 +33,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, fnThree)();
       curriedFns: [],
       pipeExpressions: [
         {
-          type: 'PipeExpression',
+          type: 'PipeStatement',
           value: 'fnABC',
           childs: [
             { type: 'Function', value: 'fnA' },
@@ -142,7 +142,7 @@ ${runtimeNames.pipe}(fnOne, ${runtimeNames.negate}(greaterThanZero), fnTwo)();
   it('generates code for a pipe invocation with functions', () => {
     const input: TransformedAST = {
       type: 'Program',
-      curriedFns: [{ type: 'CurryExpression', value: 'fnTwo' }],
+      curriedFns: [{ type: 'CurryStatement', value: 'fnTwo' }],
       pipeExpressions: [],
       pipeInvocations: [
         {
@@ -210,16 +210,16 @@ ${runtimeNames.pipe}(fnOne, fnTwo, x => isA(x) ? (x => isB(x) ? (fn2aLevel)(x) :
     expect(result).toEqual(desired);
   });
 
-  it('generates code for several pipe expressions and pipe invocations', () => {
+  it('generates code for several pipe statements and pipe invocations', () => {
     const input: TransformedAST = {
       type: 'Program',
       curriedFns: [
-        { type: 'CurryExpression', value: 'fnThree' },
-        { type: 'CurryExpression', value: 'fnTen' },
+        { type: 'CurryStatement', value: 'fnThree' },
+        { type: 'CurryStatement', value: 'fnTen' },
       ],
       pipeExpressions: [
         {
-          type: 'PipeExpression',
+          type: 'PipeStatement',
           value: 'fnPipeA',
           childs: [
             { type: 'Function', value: 'fnOneA' },
@@ -228,7 +228,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, x => isA(x) ? (x => isB(x) ? (fn2aLevel)(x) :
           ],
         },
         {
-          type: 'PipeExpression',
+          type: 'PipeStatement',
           value: 'fnPipeB',
           childs: [
             { type: 'Function', value: 'fnOneB' },
@@ -290,10 +290,10 @@ ${runtimeNames.pipe}(fnEleven, fnTwelve)();
     expect(result).toEqual(desired);
   });
 
-  it('generates code for a pipe invocation with union expression', () => {
+  it('generates code for a pipe invocation with union statement', () => {
     const input: TransformedAST = {
       type: 'Program',
-      curriedFns: [{ type: 'CurryExpression', value: 'fnTwo' }],
+      curriedFns: [{ type: 'CurryStatement', value: 'fnTwo' }],
       pipeExpressions: [],
       pipeInvocations: [
         {
@@ -306,7 +306,7 @@ ${runtimeNames.pipe}(fnEleven, fnTwelve)();
               args: [{ type: 'Number', value: '1' }],
             },
             {
-              type: 'UnionExpression',
+              type: 'UnionStatement',
               childs: [
                 { type: 'Function', value: 'fnUnionA' },
                 { type: 'Function', value: 'fnUnionB' },

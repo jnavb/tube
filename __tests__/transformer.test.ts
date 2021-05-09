@@ -7,7 +7,7 @@ describe('Transformer: common cases', () => {
       type: 'Program',
       childs: [
         {
-          type: 'PipeExpression',
+          type: 'PipeStatement',
           value: 'fnABC',
           childs: [
             {
@@ -54,7 +54,7 @@ describe('Transformer: common cases', () => {
       curriedFns: [],
       pipeExpressions: [
         {
-          type: 'PipeExpression',
+          type: 'PipeStatement',
           value: 'fnABC',
           childs: [
             {
@@ -143,7 +143,7 @@ describe('Transformer: common cases', () => {
       type: 'Program',
       curriedFns: [
         {
-          type: 'CurryExpression',
+          type: 'CurryStatement',
           value: 'fnTwo',
         },
       ],
@@ -187,7 +187,7 @@ describe('Transformer: common cases', () => {
     expect(result).toEqual(desired);
   });
 
-  it('should transform a union expression', () => {
+  it('should transform a union statement', () => {
     const input: AST = {
       type: 'Program',
       childs: [
@@ -197,7 +197,7 @@ describe('Transformer: common cases', () => {
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             {
-              type: 'UnionExpression',
+              type: 'UnionStatement',
               childs: [
                 { type: 'Function', value: 'fnUnionOne' },
                 { type: 'Function', value: 'fnUnionTwo' },
@@ -228,7 +228,7 @@ describe('Transformer: common cases', () => {
               value: 'fnTwo',
             },
             {
-              type: 'UnionExpression',
+              type: 'UnionStatement',
               childs: [
                 {
                   type: 'Function',
@@ -328,7 +328,7 @@ describe('Transformer: common cases', () => {
     const result = transformer(input);
     const desired: TransformedAST = {
       type: 'Program',
-      curriedFns: [{ type: 'CurryExpression', value: 'fnTwo' }],
+      curriedFns: [{ type: 'CurryStatement', value: 'fnTwo' }],
       pipeExpressions: [],
       pipeInvocations: [
         {
@@ -377,7 +377,7 @@ describe('Transformer: common cases', () => {
       type: 'Program',
       curriedFns: [
         {
-          type: 'CurryExpression',
+          type: 'CurryStatement',
           value: 'fnTen',
         },
       ],
@@ -410,7 +410,7 @@ describe('Transformer: common cases', () => {
           childs: [
             { type: 'Function', value: 'fn1' },
             {
-              type: 'SwitchExpression',
+              type: 'SwitchStatement',
               cases: [
                 { type: 'SwitchCase', predicate: 'isA', value: 'fnA' },
                 { type: 'SwitchCase', predicate: 'isB', value: 'fnB' },
@@ -434,7 +434,7 @@ describe('Transformer: common cases', () => {
           childs: [
             { type: 'Function', value: 'fn1' },
             {
-              type: 'SwitchExpression',
+              type: 'SwitchStatement',
               cases: [
                 { type: 'SwitchCase', predicate: 'isA', value: 'fnA' },
                 { type: 'SwitchCase', predicate: 'isB', value: 'fnB' },

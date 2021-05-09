@@ -1,15 +1,15 @@
 export type NodeType =
   | 'Program'
-  | 'PipeExpression'
+  | 'PipeStatement'
   | 'PipeInvocation'
   | 'String'
   | 'Number'
   | 'Variable'
   | 'Method'
   | 'Function'
-  | 'CurryExpression'
-  | 'UnionExpression'
-  | 'SwitchExpression'
+  | 'CurryStatement'
+  | 'UnionStatement'
+  | 'SwitchStatement'
   | 'SwitchCase'
   | 'DefaultSwitchCase'
   | 'SideEffect';
@@ -19,8 +19,8 @@ export interface Node {
   childs?: Node[];
   args?: (NumberLiteral | StringLiteral | Variable)[];
   negated?: boolean;
-  if?: FunctionExpression;
-  else?: FunctionExpression;
+  if?: FunctionStatement;
+  else?: FunctionStatement;
   cases?: SwitchCase[];
   default?: SwitchCase;
   predicate?: string;
@@ -31,8 +31,8 @@ export interface AST extends Node {
   childs: Node[];
 }
 
-export interface PipeExpression extends Node {
-  type: 'PipeExpression';
+export interface PipeStatement extends Node {
+  type: 'PipeStatement';
   value: string;
   childs: Node[];
 }
@@ -41,18 +41,18 @@ export interface PipeInvocation extends Node {
   childs: Node[];
 }
 
-export interface FunctionExpression extends Node {
+export interface FunctionStatement extends Node {
   type: 'Function';
   value: string;
   args?: (NumberLiteral | StringLiteral | Variable)[];
   negated?: boolean;
-  if?: FunctionExpression;
-  else?: FunctionExpression;
+  if?: FunctionStatement;
+  else?: FunctionStatement;
 }
 
-export interface UnionExpression extends Node {
-  type: 'UnionExpression';
-  childs: FunctionExpression[];
+export interface UnionStatement extends Node {
+  type: 'UnionStatement';
+  childs: FunctionStatement[];
 }
 
 export interface Method extends Node {
@@ -80,8 +80,8 @@ export interface StringLiteral extends Node {
   value: string;
 }
 
-export interface SwitchExpression extends Node {
-  type: 'SwitchExpression';
+export interface SwitchStatement extends Node {
+  type: 'SwitchStatement';
   cases: SwitchCase[];
   default?: SwitchCase;
 }

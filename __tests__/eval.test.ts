@@ -129,7 +129,7 @@ addFour
     expect(console.warn).toBeCalledWith(1);
   });
 
-  it('evaluates a pipe expression used inside a pipe invocation', () => {
+  it('evaluates a pipe statement used inside a pipe invocation', () => {
     const input = `
 -> fnPipe
     getObj1
@@ -346,7 +346,7 @@ negate isArray
     expect(result).toStrictEqual(desired);
   });
 
-  describe('union expressions', () => {
+  describe('union statements', () => {
     it('evaluates an object union ', () => {
       const input = `
 state
@@ -476,7 +476,7 @@ state
       const compiledCode = compile(input);
 
       expect(() => eval(compiledCode)).toThrowError(
-        `Mismatch between returning types of union expression`,
+        `Mismatch between returning types of union statement`,
       );
     });
 
@@ -490,12 +490,12 @@ state
       const compiledCode = compile(input);
 
       expect(() => eval(compiledCode)).toThrowError(
-        `as returning type of a union expression, not supported`,
+        `as returning type of a union statement, not supported`,
       );
     });
   });
 
-  it('evaluates a pipe expression with methods', () => {
+  it('evaluates a pipe statement with methods', () => {
     const input = `
 -> fnPipe
     getObj1
@@ -521,7 +521,7 @@ fnPipe
     expect(result).toStrictEqual('4,5,6hello');
   });
 
-  it('evaluates a pipe expression with arguments', () => {
+  it('evaluates a pipe statement with arguments', () => {
     const input = `
 -> fnPipe
     getObj1
@@ -546,7 +546,7 @@ fnPipe
     expect(result).toStrictEqual('4,5,6hello');
   });
 
-  it('evaluates a pipe expression with a side effect', () => {
+  it('evaluates a pipe statement with a side effect', () => {
     const input = `
 -> fnPipe
     getObj1
@@ -573,7 +573,7 @@ fnPipe
     expect(console.warn).toBeCalledWith([4, 5, 6, 4, 5, 6]);
   });
 
-  xit('evaluates a pipe expression with an array union ', () => {
+  xit('evaluates a pipe statement with an array union ', () => {
     const input = `
 -> fnPipe
     U getArr1
@@ -599,7 +599,7 @@ fnPipe
     expect(result).toStrictEqual(desired);
   });
 
-  it('evaluates a pipe expression with an if/else block', () => {
+  it('evaluates a pipe statement with an if/else block', () => {
     const input = `
 -> fnPipe
     getArr1

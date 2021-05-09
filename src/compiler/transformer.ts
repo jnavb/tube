@@ -1,10 +1,11 @@
 import {
   AST,
-  CurryExpression,
-  FunctionExpression,
+  CurryStatement,
+  FunctionStatement,
   Node,
-  PipeExpression,
-  PipeInvocation,
+
+  PipeInvocation, PipeStatement,
+
   TransformedAST,
   Visitor
 } from '../models';
@@ -29,9 +30,9 @@ const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
   function exploreChilds(node: Node) {
     switch (node.type) {
       case 'Program':
-      case 'PipeExpression':
+      case 'PipeStatement':
       case 'PipeInvocation':
-      case 'UnionExpression':
+      case 'UnionStatement':
         node.childs.forEach((child) => {
           traverseNode(child, node);
         });
@@ -51,7 +52,7 @@ const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
         }
         break;
 
-      case 'SwitchExpression':
+      case 'SwitchStatement':
         node.cases.forEach((child) => {
           traverseNode(child, node);
         });
@@ -85,8 +86,8 @@ export const transformer = (ast: AST) => {
   };
 
   const traverseWithVisitor = traverse({
-    PipeExpression: {
-      enter(node: PipeExpression, _: AST) {
+    PipeStatement: {
+      enter(node: PipeStatement, _: AST) {
         const alreadyDeclared = exists(newAst.pipeExpressions, node);
         if (alreadyDeclared) return;
         newAst.pipeExpressions.push(node);
@@ -98,15 +99,15 @@ export const transformer = (ast: AST) => {
       },
     },
     Function: {
-      enter(node: FunctionExpression, _: PipeExpression) {
+      enter(node: FunctionStatement, _: PipeStatement) {
         const { value, args } = node;
 
         const alreadyDeclared = exists(newAst.curriedFns, node);
         if (alreadyDeclared) return;
 
         if (args?.length) {
-          const curryExpression: CurryExpression = {
-            type: 'CurryExpression',
+          const curryExpression: CurryStatement = {
+            type: 'CurryStatement',
             value,
           };
           newAst.curriedFns.push(curryExpression);

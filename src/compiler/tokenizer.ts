@@ -77,7 +77,7 @@ export const tokenizer = (input: string): Token[] => {
 
         if (WHITESPACE.test(char)) {
           throw new SyntaxError(
-            `Union expression not allowed with more than one space after union keyword U`,
+            `Union statement not allowed with more than one space after union keyword U`,
           );
         }
 

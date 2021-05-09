@@ -1,13 +1,13 @@
 import { Node, NodeType } from './parser';
 export interface TransformedAST {
   type: 'Program';
-  curriedFns: CurryExpression[];
+  curriedFns: CurryStatement[];
   pipeExpressions: Node[];
   pipeInvocations: Node[];
 }
 
-export interface CurryExpression extends Node {
-  type: 'CurryExpression';
+export interface CurryStatement extends Node {
+  type: 'CurryStatement';
   value: string;
 }
 

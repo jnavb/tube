@@ -273,7 +273,7 @@ describe('AST: common cases', () => {
           childs: [
             { type: 'Function', value: 'fn1' },
             {
-              type: 'SwitchExpression',
+              type: 'SwitchStatement',
               cases: [
                 { type: 'SwitchCase', predicate: 'isA', value: 'fnA' },
                 { type: 'SwitchCase', predicate: 'isB', value: 'fnB' },
@@ -417,7 +417,7 @@ describe('AST: common cases', () => {
     expect(result).toStrictEqual(desired);
   });
 
-  it('should parse a pipe expression', () => {
+  it('should parse a pipe statement', () => {
     const input: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Arrow' },
@@ -436,7 +436,7 @@ describe('AST: common cases', () => {
       type: 'Program',
       childs: [
         {
-          type: 'PipeExpression',
+          type: 'PipeStatement',
           value: 'fnPipe',
           childs: [
             { type: 'Function', value: 'fnOne' },
@@ -450,7 +450,7 @@ describe('AST: common cases', () => {
     expect(result).toStrictEqual(desired);
   });
 
-  it('should parse two pipe expressions', () => {
+  it('should parse two pipe statements', () => {
     const input: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Arrow' },
@@ -477,7 +477,7 @@ describe('AST: common cases', () => {
       type: 'Program',
       childs: [
         {
-          type: 'PipeExpression',
+          type: 'PipeStatement',
           value: 'fnPipe',
           childs: [
             { type: 'Function', value: 'fnOne' },
@@ -486,7 +486,7 @@ describe('AST: common cases', () => {
           ],
         },
         {
-          type: 'PipeExpression',
+          type: 'PipeStatement',
           value: 'fnPipe',
           childs: [
             { type: 'Function', value: 'fnOne' },
@@ -500,7 +500,7 @@ describe('AST: common cases', () => {
     expect(result).toStrictEqual(desired);
   });
 
-  it('should parse a pipe expression and a pipe invocation', () => {
+  it('should parse a pipe statement and a pipe invocation', () => {
     const input: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Arrow' },
@@ -525,7 +525,7 @@ describe('AST: common cases', () => {
       type: 'Program',
       childs: [
         {
-          type: 'PipeExpression',
+          type: 'PipeStatement',
           value: 'fnPipe',
           childs: [
             { type: 'Function', value: 'fnOne' },
@@ -556,7 +556,7 @@ describe('AST: common cases', () => {
     expect(result).toStrictEqual(desired);
   });
 
-  it('should parse a union expression', () => {
+  it('should parse a union statement', () => {
     const input: Token[] = [
       { type: 'NewLine', level: 0 },
       { type: 'Function', value: 'fnOne' },
@@ -586,7 +586,7 @@ describe('AST: common cases', () => {
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             {
-              type: 'UnionExpression',
+              type: 'UnionStatement',
               childs: [
                 { type: 'Function', value: 'fnUnionOne' },
                 { type: 'Function', value: 'fnUnionTwo' },
@@ -622,7 +622,7 @@ describe('AST: common cases', () => {
     ];
 
     expect(() => parser(input)).toThrowError(
-      `Invalid PipeExpression format`,
+      `Invalid PipeStatement format`,
     );
   });
 });
