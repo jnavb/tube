@@ -4,9 +4,8 @@ import {
   Method,
   Node,
   NumberLiteral,
-
-  PipeInvocation, PipeStatement,
-
+  PipeInvocation,
+  PipeStatement,
   StringLiteral,
   SwitchCase,
   SwitchStatement,
@@ -66,9 +65,13 @@ export const parser = (tokens: Token[]): AST => {
       current++;
       let unionLevel = currentLevel;
 
-      while (unionLevel === currentLevel) {
+      while (
+        token?.type !== 'EmptyLine' &&
+        !(token?.type === 'NewLine' && token?.level !== unionLevel)
+      ) {
         const node = walk();
         node && unionNode.childs.push(node);
+        token = tokens[current];
       }
 
       insideUnion = false;
