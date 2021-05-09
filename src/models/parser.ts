@@ -23,7 +23,7 @@ export interface Node {
   else?: FunctionExpression;
   cases?: SwitchCase[];
   default?: SwitchCase;
-  case?: string;
+  predicate?: string;
 }
 
 export interface AST extends Node {
@@ -88,6 +88,6 @@ export interface SwitchExpression extends Node {
 
 export interface SwitchCase extends Node {
   type: 'SwitchCase' | 'DefaultSwitchCase';
-  case: string;
+  predicate: string;
   value: string;
 }
