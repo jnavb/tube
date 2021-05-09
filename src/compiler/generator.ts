@@ -29,12 +29,12 @@ const _generator = (node: Node): string => {
     case 'Program':
       return '\n' + node.childs.map(_generator).join('\n') + '\n';
 
-    case 'CurryExpression':
+    case 'CurryStatement':
       return `const ${getNameOfFunctionCurried(node.value)} = ${
         runtimeNames.curry
       }(${node.value});`;
 
-    case 'PipeExpression':
+    case 'PipeStatement':
       const leftHandSide = `const ${node.value}`;
       const rightHandSide = `${runtimeNames.pipe}(${node.childs
         .map(_generator)
@@ -73,7 +73,7 @@ const _generator = (node: Node): string => {
 
       return fn;
 
-    case 'SwitchExpression':
+    case 'SwitchStatement':
       const cases = node.cases.map(_generator).join(' : ');
       const defaultClause = node.default
         ? `${node.default.value}(x)`
@@ -87,7 +87,7 @@ const _generator = (node: Node): string => {
     case 'SwitchCase':
       return `${node.predicate}(x) ? ${node.value}(x)`;
 
-    case 'UnionExpression':
+    case 'UnionStatement':
       return `${runtimeNames.union}(${node.childs.map(_generator).join(', ')})`;
 
     case 'Number':

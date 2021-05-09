@@ -16,7 +16,7 @@ export const union = (...fns) => (x) => {
 
       if (!supportedTypes.has(typeof acc) || !supportedTypes.has(typeof value)) {
         throw new Error(
-          `Type ${typeof value} as returning type of a union expression, not supported`,
+          `Type ${typeof value} as returning type of a union statement, not supported`,
         );
       }
 
@@ -24,7 +24,7 @@ export const union = (...fns) => (x) => {
         typeof acc !== typeof value ||
         Array.isArray(acc) !== Array.isArray(value)
       ) {
-        throw new Error('Mismatch between returning types of union expression');
+        throw new Error('Mismatch between returning types of union statement');
       }
 
       if (Array.isArray(value) || typeof value === 'string') {

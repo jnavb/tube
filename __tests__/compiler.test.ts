@@ -17,7 +17,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, fnThree)();
     expect(result).toEqual(desired);
   });
 
-  it('compiles a pipe invocation with pipe expression and a pipe invocation', () => {
+  it('compiles a pipe invocation with pipe statement and a pipe invocation', () => {
     const input = `
 -> fnABC
     fnA
@@ -148,7 +148,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, x => fnThree(x) ? (x => fn1A(x) ? (fn2A)(x) :
     expect(result).toEqual(desired);
   });
 
-  it('compiles a pipe invocation with union expression', () => {
+  it('compiles a pipe invocation with union statement', () => {
     const input = `
 fnOne
 fnTwo with 1
@@ -167,7 +167,7 @@ ${runtimeNames.pipe}(fnOne, __tube_curried_fnTwo(1), ${runtimeNames.union}(fnUni
     expect(result).toEqual(desired);
   });
 
-  it('compiles a pipe invocation with pipe expressions and pipe invocations', () => {
+  it('compiles a pipe invocation with pipe statements and pipe invocations', () => {
     const input = `
 -> fnPipeA
     fnOneA

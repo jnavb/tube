@@ -637,7 +637,7 @@ fnTwo with 1
 `;
 
       expect(() => tokenizer(input)).toThrowError(
-        `Union expression not allowed with more than one space after union keyword U`,
+        `Union statement not allowed with more than one space after union keyword U`,
       );
     });
 
