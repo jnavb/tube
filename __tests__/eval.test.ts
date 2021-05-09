@@ -573,13 +573,12 @@ fnPipe
     expect(console.warn).toBeCalledWith([4, 5, 6, 4, 5, 6]);
   });
 
-  xit('evaluates a pipe statement with an array union ', () => {
+  it('evaluates a pipe statement with an array union ', () => {
     const input = `
 -> fnPipe
     U getArr1
     U getArr2
     U getArr1
-
 
 state
 fnPipe
@@ -591,7 +590,30 @@ fnPipe
     [...getArr1(res), ...getArr2(res), ...getArr1(res)]
     `;
 
-    console.log(compiledCode)
+    const result = eval(compiledCode);
+    const desired = eval(jsCode);
+
+    expect(result).toEqual([1, 2, 3, 'a', 'b', 'c', 1, 2, 3]);
+    expect(result).toStrictEqual(desired);
+  });
+
+  it('evaluates a pipe statement with an array union with arguments', () => {
+    const input = `
+-> fnPipe
+    U pick 'arr1'
+    U getArr2
+    U getArr1
+
+state
+fnPipe
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    let res = state();
+    [...getArr1(res), ...getArr2(res), ...getArr1(res)]
+    `;
+
     const result = eval(compiledCode);
     const desired = eval(jsCode);
 

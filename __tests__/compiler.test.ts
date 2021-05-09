@@ -167,6 +167,26 @@ ${runtimeNames.pipe}(fnOne, __tube_curried_fnTwo(1), ${runtimeNames.union}(fnUni
     expect(result).toEqual(desired);
   });
 
+  it('compiles a pipe statement with only union statement', () => {
+    const input = `
+-> fnPipeA
+    U fnUnionA
+    U fnUnionB
+    U fnUnionC
+
+state
+fnPipeA
+`;
+
+    const result = compile(input);
+    const desired = `
+const fnPipeA = ${runtimeNames.pipe}(${runtimeNames.union}(fnUnionA, fnUnionB, fnUnionC));
+${runtimeNames.pipe}(state, fnPipeA)();
+`;
+
+    expect(result).toEqual(desired);
+  });
+
   it('compiles a pipe invocation with pipe statements and pipe invocations', () => {
     const input = `
 -> fnPipeA
