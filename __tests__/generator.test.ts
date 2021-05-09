@@ -20,11 +20,11 @@ describe('Compile: common cases', () => {
     };
 
     const result = generator(input);
-    const desired = `
+    const expected = `
 ${runtimeNames.pipe}(fnOne, fnTwo, fnThree)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('generates code for a pipe invocation with functions', () => {
@@ -55,12 +55,12 @@ ${runtimeNames.pipe}(fnOne, fnTwo, fnThree)();
     };
 
     const result = generator(input);
-    const desired = `
+    const expected = `
 const fnABC = ${runtimeNames.pipe}(fnA, fnB, fnC);
 ${runtimeNames.pipe}(fnOne, fnTwo, fnThree)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('generates code for a pipe invocation with functions', () => {
@@ -82,11 +82,11 @@ ${runtimeNames.pipe}(fnOne, fnTwo, fnThree)();
     };
 
     const result = generator(input);
-    const desired = `
+    const expected = `
 ${runtimeNames.pipe}(fnOne, fnTwo, fnThree, x => x.toString())();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('generates code for a pipe invocation with side effect', () => {
@@ -107,11 +107,11 @@ ${runtimeNames.pipe}(fnOne, fnTwo, fnThree, x => x.toString())();
     };
 
     const result = generator(input);
-    const desired = `
+    const expected = `
 ${runtimeNames.pipe}(fnOne, ${runtimeNames.sideEffect}(console.log), fnTwo)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('generates code for a pipe invocation with negation', () => {
@@ -132,11 +132,11 @@ ${runtimeNames.pipe}(fnOne, ${runtimeNames.sideEffect}(console.log), fnTwo)();
     };
 
     const result = generator(input);
-    const desired = `
+    const expected = `
 ${runtimeNames.pipe}(fnOne, ${runtimeNames.negate}(greaterThanZero), fnTwo)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('generates code for a pipe invocation with functions', () => {
@@ -166,12 +166,12 @@ ${runtimeNames.pipe}(fnOne, ${runtimeNames.negate}(greaterThanZero), fnTwo)();
     };
 
     const result = generator(input);
-    const desired = `
+    const expected = `
 const __tube_curried_fnTwo = ${runtimeNames.curry}(fnTwo);
 ${runtimeNames.pipe}(fnOne, __tube_curried_fnTwo('str1', 2, 'str3', var1), fnThree)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('generates code for a pipe invocation with if/else blocks', () => {
@@ -203,11 +203,11 @@ ${runtimeNames.pipe}(fnOne, __tube_curried_fnTwo('str1', 2, 'str3', var1), fnThr
     };
 
     const result = generator(input);
-    const desired = `
+    const expected = `
 ${runtimeNames.pipe}(fnOne, fnTwo, x => isA(x) ? (x => isB(x) ? (fn2aLevel)(x) : (fn2bLevel)(x))(x) : (fn1bLevel)(x), fnThree)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('generates code for several pipe statements and pipe invocations', () => {
@@ -278,7 +278,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, x => isA(x) ? (x => isB(x) ? (fn2aLevel)(x) :
     };
 
     const result = generator(input);
-    const desired = `
+    const expected = `
 const __tube_curried_fnThree = ${runtimeNames.curry}(fnThree);
 const __tube_curried_fnTen = ${runtimeNames.curry}(fnTen);
 const fnPipeA = ${runtimeNames.pipe}(fnOneA, fnTwoA, fnThreeA);
@@ -287,7 +287,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, x => x.methodOne(), x => x.methodTwo(), __tub
 ${runtimeNames.pipe}(fnEleven, fnTwelve)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('generates code for a pipe invocation with union statement', () => {
@@ -320,12 +320,12 @@ ${runtimeNames.pipe}(fnEleven, fnTwelve)();
     };
 
     const result = generator(input);
-    const desired = `
+    const expected = `
 const __tube_curried_fnTwo = ${runtimeNames.curry}(fnTwo);
 ${runtimeNames.pipe}(fnOne, __tube_curried_fnTwo(1), ${runtimeNames.union}(fnUnionA, fnUnionB, fnUnionC), fnThree)();
 `;
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('should throw an error when is an unkown node type', () => {

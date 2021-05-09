@@ -49,7 +49,7 @@ describe('Transformer: common cases', () => {
     };
 
     const result = transformer(input);
-    const desired: TransformedAST = {
+    const expected: TransformedAST = {
       type: 'Program',
       curriedFns: [],
       pipeExpressions: [
@@ -97,7 +97,7 @@ describe('Transformer: common cases', () => {
       ],
     };
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('should transform a pipe invocation with number arguments', () => {
@@ -139,7 +139,7 @@ describe('Transformer: common cases', () => {
     };
 
     const result = transformer(input);
-    const desired: TransformedAST = {
+    const expected: TransformedAST = {
       type: 'Program',
       curriedFns: [
         {
@@ -184,7 +184,7 @@ describe('Transformer: common cases', () => {
       ],
     };
 
-    expect(result).toEqual(desired);
+    expect(result).toEqual(expected);
   });
 
   it('should transform a union statement', () => {
@@ -211,7 +211,7 @@ describe('Transformer: common cases', () => {
     };
 
     const result = transformer(input);
-    const desired: TransformedAST = {
+    const expected: TransformedAST = {
       type: 'Program',
       curriedFns: [],
       pipeExpressions: [],
@@ -253,7 +253,7 @@ describe('Transformer: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should transform a method', () => {
@@ -273,7 +273,7 @@ describe('Transformer: common cases', () => {
     };
 
     const result = transformer(input);
-    const desired: TransformedAST = {
+    const expected: TransformedAST = {
       type: 'Program',
       curriedFns: [],
       pipeExpressions: [],
@@ -290,7 +290,7 @@ describe('Transformer: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should transform a pipe with string arguments', () => {
@@ -326,7 +326,7 @@ describe('Transformer: common cases', () => {
     };
 
     const result = transformer(input);
-    const desired: TransformedAST = {
+    const expected: TransformedAST = {
       type: 'Program',
       curriedFns: [{ type: 'CurryStatement', value: 'fnTwo' }],
       pipeExpressions: [],
@@ -350,7 +350,7 @@ describe('Transformer: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should transform a pipe with a side effect', () => {
@@ -373,7 +373,7 @@ describe('Transformer: common cases', () => {
     };
 
     const result = transformer(input);
-    const desired: TransformedAST = {
+    const expected: TransformedAST = {
       type: 'Program',
       curriedFns: [
         {
@@ -398,7 +398,7 @@ describe('Transformer: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should transform a pipe with a switch block', () => {
@@ -424,7 +424,7 @@ describe('Transformer: common cases', () => {
     };
 
     const result = transformer(input);
-    const desired: TransformedAST = {
+    const expected: TransformedAST = {
       type: 'Program',
       curriedFns: [],
       pipeExpressions: [],
@@ -447,7 +447,7 @@ describe('Transformer: common cases', () => {
       ],
     };
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should throw an error when is an unkown node type', () => {

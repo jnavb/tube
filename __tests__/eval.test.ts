@@ -68,9 +68,9 @@ getN1
     const jsCode = `getN1(state())`;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe invocation with a method', () => {
@@ -84,9 +84,9 @@ getStr1
     const jsCode = `getStr1(state()).toString()`;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe invocation with a method with an argument', () => {
@@ -100,9 +100,9 @@ getArr1
     const jsCode = `getArr1(state()).map(addOne)`;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe invocation with a side effect', () => {
@@ -121,9 +121,9 @@ addFour
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
 
     expect(console.warn).toBeCalledTimes(2);
     expect(console.warn).toBeCalledWith(1);
@@ -149,9 +149,9 @@ fnPipe
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
 
     expect(console.warn).toBeCalledTimes(2);
     expect(console.warn).toBeCalledWith([4, 5, 6, 4, 5, 6]);
@@ -178,10 +178,10 @@ pick 'n1'
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual(5);
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe invocation with a switch block and default clause', () => {
@@ -208,10 +208,10 @@ pick 'n0'
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual(1);
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe with a truthy condition in an if/else block', () => {
@@ -235,10 +235,10 @@ isArray
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual(1);
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe with a falsy condition in an if/else block', () => {
@@ -262,10 +262,10 @@ isArray
         `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual('str1hello');
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe with an if/else block with arguments', () => {
@@ -289,10 +289,10 @@ isArray
         `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual('str1hello');
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe with an if block', () => {
@@ -313,10 +313,10 @@ isArray
         `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual('str1');
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe with a negation', () => {
@@ -340,10 +340,10 @@ getArr1
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual(1);
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   describe('union statements', () => {
@@ -362,10 +362,10 @@ state
       `;
 
       const result = eval(compiledCode);
-      const desired = eval(jsCode);
+      const expected = eval(jsCode);
 
       expect(result).toEqual({ a: 1, b: 'b', c: 1, d: 'd', f: [] });
-      expect(result).toStrictEqual(desired);
+      expect(result).toStrictEqual(expected);
     });
 
     it('evaluates a boolean union ', () => {
@@ -381,10 +381,10 @@ state
       `;
 
       const result = eval(compiledCode);
-      const desired = eval(jsCode);
+      const expected = eval(jsCode);
 
       expect(result).toEqual(true);
-      expect(result).toStrictEqual(desired);
+      expect(result).toStrictEqual(expected);
     });
 
     it('evaluates an function with boolean primitives', () => {
@@ -398,10 +398,10 @@ booleanFactory false
       `;
 
       const result = eval(compiledCode);
-      const desired = eval(jsCode);
+      const expected = eval(jsCode);
 
       expect(result).toEqual(false);
-      expect(result).toStrictEqual(desired);
+      expect(result).toStrictEqual(expected);
     });
 
     it('evaluates a number union ', () => {
@@ -418,10 +418,10 @@ state
       `;
 
       const result = eval(compiledCode);
-      const desired = eval(jsCode);
+      const expected = eval(jsCode);
 
       expect(result).toEqual(3);
-      expect(result).toStrictEqual(desired);
+      expect(result).toStrictEqual(expected);
     });
 
     it('evaluates an array union ', () => {
@@ -439,10 +439,10 @@ state
       `;
 
       const result = eval(compiledCode);
-      const desired = eval(jsCode);
+      const expected = eval(jsCode);
 
       expect(result).toEqual([1, 2, 3, 'a', 'b', 'c', 1, 2, 3]);
-      expect(result).toStrictEqual(desired);
+      expect(result).toStrictEqual(expected);
     });
 
     it('ignores null and undefined values ', () => {
@@ -460,10 +460,10 @@ state
       `;
 
       const result = eval(compiledCode);
-      const desired = eval(jsCode);
+      const expected = eval(jsCode);
 
       expect(result).toEqual([1, 2, 3]);
-      expect(result).toStrictEqual(desired);
+      expect(result).toStrictEqual(expected);
     });
 
     it('throws an error when union has different types', () => {
@@ -515,9 +515,9 @@ fnPipe
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
     expect(result).toStrictEqual('4,5,6hello');
   });
 
@@ -540,9 +540,9 @@ fnPipe
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
     expect(result).toStrictEqual('4,5,6hello');
   });
 
@@ -565,9 +565,9 @@ fnPipe
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
 
     expect(console.warn).toBeCalledTimes(1);
     expect(console.warn).toBeCalledWith([4, 5, 6, 4, 5, 6]);
@@ -591,10 +591,10 @@ fnPipe
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual([1, 2, 3, 'a', 'b', 'c', 1, 2, 3]);
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe statement with an array union with arguments', () => {
@@ -615,10 +615,10 @@ fnPipe
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual([1, 2, 3, 'a', 'b', 'c', 1, 2, 3]);
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe statement with an if/else block', () => {
@@ -645,10 +645,10 @@ fnPipe
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual(1);
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
   it('evaluates a pipe invocation with a curried function called more than once', () => {
@@ -664,9 +664,9 @@ pick 'c'
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual(1);
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 });
