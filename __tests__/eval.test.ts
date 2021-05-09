@@ -323,7 +323,7 @@ isArray
     const input = `
 state
 getArr1
-negate isArray
+! isArray
     : noop
     : first
 `;
