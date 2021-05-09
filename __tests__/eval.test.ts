@@ -1,7 +1,8 @@
 import { compile } from '../src/compiler/compile';
 import * as tube from '../src/main';
 
-const mockState = () => ({
+const state = () => ({
+  n0: 0,
   n1: 1,
   n2: 2,
   str1: 'str1',
@@ -13,7 +14,7 @@ const mockState = () => ({
   fn1: () => {}
 });
 
-type Mock = ReturnType<typeof mockState>;
+type Mock = ReturnType<typeof state>;
 
 const getN1 = ({ n1 }: Mock) => n1;
 const getN2 = ({ n2 }: Mock) => n2;
@@ -29,6 +30,9 @@ const getTrue = () => true;
 const getFalse = () => false;
 const getNull = () => null;
 const getUndefined = () => undefined;
+const pick = (props) => obj => props.split('.').reduce((acc, v) => acc[v], obj)
+const isGreaterThanZero = n => n > 0
+const isLessThanZero = n => n < 0
 
 const isString = (v: any): v is string => typeof v === 'string';
 const isArray = (v: any): v is unknown[] => Array.isArray(v);
@@ -43,7 +47,7 @@ const first = (v: any[]) => v[0];
 const last = (v: any[]) => v[v.length - 1];
 const returnFalse = () => false;
 const sum = (a: number, b: number) => a + b;
-const sumFour = (a: number) => a + 4;
+const addFour = (a: number) => a + 4;
 const addOne = (a: number) => a + 1;
 const duplicateArr = (arr: any[]) => arr.concat(arr);
 
@@ -51,17 +55,17 @@ const __tube_lang__ = tube;
 
 describe('execution of compiled code', () => {
   beforeEach(() => {
-    console.log = jest.fn();
+    console.warn = jest.fn();
   });
 
   it('evaluates a pipe invocation with functions', () => {
     const input = `
-mockState
+state
 getN1
 `;
 
     const compiledCode = compile(input);
-    const jsCode = `getN1(mockState())`;
+    const jsCode = `getN1(state())`;
 
     const result = eval(compiledCode);
     const desired = eval(jsCode);
@@ -71,13 +75,13 @@ getN1
 
   it('evaluates a pipe invocation with a method', () => {
     const input = `
-mockState
+state
 getStr1
 ::toString
 `;
 
     const compiledCode = compile(input);
-    const jsCode = `getStr1(mockState()).toString()`;
+    const jsCode = `getStr1(state()).toString()`;
 
     const result = eval(compiledCode);
     const desired = eval(jsCode);
@@ -87,13 +91,13 @@ getStr1
 
   it('evaluates a pipe invocation with a method with an argument', () => {
     const input = `
-mockState
+state
 getArr1
 ::map to addOne
 `;
 
     const compiledCode = compile(input);
-    const jsCode = `getArr1(mockState()).map(addOne)`;
+    const jsCode = `getArr1(state()).map(addOne)`;
 
     const result = eval(compiledCode);
     const desired = eval(jsCode);
@@ -103,17 +107,17 @@ getArr1
 
   it('evaluates a pipe invocation with a side effect', () => {
     const input = `
-mockState
+state
 getN1
-< console.log >
-sumFour
+< console.warn >
+addFour
 `;
 
     const compiledCode = compile(input);
     const jsCode = `
-    const n = getN1(mockState());
-    console.log(n);
-    sumFour(n)
+    const n = getN1(state());
+    console.warn(n);
+    addFour(n)
     `;
 
     const result = eval(compiledCode);
@@ -121,8 +125,8 @@ sumFour
 
     expect(result).toStrictEqual(desired);
 
-    expect(console.log).toBeCalledTimes(2);
-    expect(console.log).toBeCalledWith(1);
+    expect(console.warn).toBeCalledTimes(2);
+    expect(console.warn).toBeCalledWith(1);
   });
 
   it('evaluates a pipe expression used inside a pipe invocation', () => {
@@ -132,15 +136,15 @@ sumFour
     getArrC
     duplicateArr
 
-mockState
+state
 fnPipe
-< console.log >
+< console.warn >
 `;
 
     const compiledCode = compile(input);
     const jsCode = `
-    const n = duplicateArr(getArrC(getObj1(mockState())));
-    console.log(n);
+    const n = duplicateArr(getArrC(getObj1(state())));
+    console.warn(n);
     n;
     `;
 
@@ -149,13 +153,70 @@ fnPipe
 
     expect(result).toStrictEqual(desired);
 
-    expect(console.log).toBeCalledTimes(2);
-    expect(console.log).toBeCalledWith([4, 5, 6, 4, 5, 6]);
+    expect(console.warn).toBeCalledTimes(2);
+    expect(console.warn).toBeCalledWith([4, 5, 6, 4, 5, 6]);
+  });
+
+  it('evaluates a pipe invocation with switch block', () => {
+    const input = `
+state
+pick 'n1'
+    : isGreaterThanZero : addFour
+    : isLessThanZero : addOne
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    let res = pick('n1')(state())
+
+    if (isGreaterThanZero(res)) {
+      res = addFour(res)
+    } else if (isLessThanZero(res)) {
+      res = addOne(res)
+    }
+    res;
+    `;
+
+    const result = eval(compiledCode);
+    const desired = eval(jsCode);
+
+    expect(result).toEqual(5);
+    expect(result).toStrictEqual(desired);
+  });
+
+  it('evaluates a pipe invocation with a switch block and default clause', () => {
+    const input = `
+state
+pick 'n0'
+    : isGreaterThanZero : addFour
+    : default : addOne
+    : isLessThanZero : addOne
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    let res = pick('n0')(state())
+
+    if (isGreaterThanZero(res)) {
+      res = addFour(res)
+    } else if (isLessThanZero(res)) {
+      res = addOne(res)
+    } else {
+      res = addOne(res)
+    }
+    res;
+    `;
+
+    const result = eval(compiledCode);
+    const desired = eval(jsCode);
+
+    expect(result).toEqual(1);
+    expect(result).toStrictEqual(desired);
   });
 
   it('evaluates a pipe with a truthy condition in an if/else block', () => {
     const input = `
-mockState
+state
 getArr1
 isArray
     : first
@@ -164,7 +225,7 @@ isArray
 
     const compiledCode = compile(input);
     const jsCode = `
-    let res = getArr1(mockState());
+    let res = getArr1(state());
     if (isArray(res)) {
       res = first(res);
     } else {
@@ -182,7 +243,7 @@ isArray
 
   it('evaluates a pipe with a falsy condition in an if/else block', () => {
     const input = `
-mockState
+state
 getStr1
 isArray
     : noop
@@ -191,7 +252,7 @@ isArray
 
     const compiledCode = compile(input);
     const jsCode = `
-        let res = getStr1(mockState());
+        let res = getStr1(state());
         if (isArray(res)) {
           res = noop(res);
         } else {
@@ -209,7 +270,7 @@ isArray
 
   it('evaluates a pipe with an if/else block with arguments', () => {
     const input = `
-mockState
+state
 getStr1
 isArray
     : noop
@@ -218,7 +279,7 @@ isArray
 
     const compiledCode = compile(input);
     const jsCode = `
-        let res = getStr1(mockState());
+        let res = getStr1(state());
         if (isArray(res)) {
           res = noop(res);
         } else {
@@ -236,7 +297,7 @@ isArray
 
   it('evaluates a pipe with an if block', () => {
     const input = `
-mockState
+state
 getStr1
 isArray
     : append 'hello'
@@ -244,7 +305,7 @@ isArray
 
     const compiledCode = compile(input);
     const jsCode = `
-        let res = getStr1(mockState());
+        let res = getStr1(state());
         if (isArray(res)) {
           res = append('hello')(res);
         }
@@ -260,7 +321,7 @@ isArray
 
   it('evaluates a pipe with a negation', () => {
     const input = `
-mockState
+state
 getArr1
 negate isArray
     : noop
@@ -269,7 +330,7 @@ negate isArray
 
     const compiledCode = compile(input);
     const jsCode = `
-    let res = getArr1(mockState());
+    let res = getArr1(state());
     if (!isArray(res)) {
       res = noop(res);
     } else {
@@ -288,14 +349,14 @@ negate isArray
   describe('union expressions', () => {
     it('evaluates an object union ', () => {
       const input = `
-mockState
+state
     U getObj1
     U getObj2
 `;
 
       const compiledCode = compile(input);
       const jsCode = `
-      let res = mockState();
+      let res = state();
       res = { ...getObj1(res), ...getObj2(res) };
       res;
       `;
@@ -309,7 +370,7 @@ mockState
 
     it('evaluates a boolean union ', () => {
       const input = `
-mockState
+state
     U getTrue
     U getFalse
 `;
@@ -345,14 +406,14 @@ booleanFactory false
 
     it('evaluates a number union ', () => {
       const input = `
-mockState
+state
     U getN1
     U getN2
 `;
 
       const compiledCode = compile(input);
       const jsCode = `
-      let res = mockState();
+      let res = state();
       getN1(res) + getN2(res)
       `;
 
@@ -365,7 +426,7 @@ mockState
 
     it('evaluates an array union ', () => {
       const input = `
-mockState
+state
     U getArr1
     U getArr2
     U getArr1
@@ -373,7 +434,7 @@ mockState
 
       const compiledCode = compile(input);
       const jsCode = `
-      let res = mockState();
+      let res = state();
       [...getArr1(res), ...getArr2(res), ...getArr1(res)]
       `;
 
@@ -386,7 +447,7 @@ mockState
 
     it('ignores null and undefined values ', () => {
       const input = `
-mockState
+state
     U getArr1
     U getUndefined
     U getNull
@@ -394,7 +455,7 @@ mockState
 
       const compiledCode = compile(input);
       const jsCode = `
-      let res = mockState();
+      let res = state();
       [...getArr1(res)]
       `;
 
@@ -407,7 +468,7 @@ mockState
 
     it('throws an error when union has different types', () => {
       const input = `
-mockState
+state
     U getArr1
     U getObj1
 `;
@@ -421,7 +482,7 @@ mockState
 
     it('throws an error for union with not supported types', () => {
       const input = `
-mockState
+state
     U getFn1
     U getArr1
 `;
@@ -432,5 +493,158 @@ mockState
         `as returning type of a union expression, not supported`,
       );
     });
+  });
+
+  it('evaluates a pipe expression with methods', () => {
+    const input = `
+-> fnPipe
+    getObj1
+    getArrC
+    ::toString
+    appendHello
+    ::toString
+
+state
+fnPipe
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    const n = appendHello(getArrC(getObj1(state())).toString()).toString();
+    n;
+    `;
+
+    const result = eval(compiledCode);
+    const desired = eval(jsCode);
+
+    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual('4,5,6hello');
+  });
+
+  it('evaluates a pipe expression with arguments', () => {
+    const input = `
+-> fnPipe
+    getObj1
+    getArrC
+    ::toString
+    append 'hello'
+
+state
+fnPipe
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    const n = append('hello')(getArrC(getObj1(state())).toString());
+    n;
+    `;
+
+    const result = eval(compiledCode);
+    const desired = eval(jsCode);
+
+    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual('4,5,6hello');
+  });
+
+  it('evaluates a pipe expression with a side effect', () => {
+    const input = `
+-> fnPipe
+    getObj1
+    getArrC
+    duplicateArr
+    < console.warn >
+
+state
+fnPipe
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    const n = duplicateArr(getArrC(getObj1(state())));
+    n;
+    `;
+
+    const result = eval(compiledCode);
+    const desired = eval(jsCode);
+
+    expect(result).toStrictEqual(desired);
+
+    expect(console.warn).toBeCalledTimes(1);
+    expect(console.warn).toBeCalledWith([4, 5, 6, 4, 5, 6]);
+  });
+
+  xit('evaluates a pipe expression with an array union ', () => {
+    const input = `
+-> fnPipe
+    U getArr1
+    U getArr2
+    U getArr1
+
+
+state
+fnPipe
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    let res = state();
+    [...getArr1(res), ...getArr2(res), ...getArr1(res)]
+    `;
+
+    console.log(compiledCode)
+    const result = eval(compiledCode);
+    const desired = eval(jsCode);
+
+    expect(result).toEqual([1, 2, 3, 'a', 'b', 'c', 1, 2, 3]);
+    expect(result).toStrictEqual(desired);
+  });
+
+  it('evaluates a pipe expression with an if/else block', () => {
+    const input = `
+-> fnPipe
+    getArr1
+    isArray
+        : first
+        : noop
+
+state
+fnPipe
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    let res = getArr1(state());
+    if (isArray(res)) {
+      res = first(res);
+    } else {
+      res = noop(res);
+    }
+    res;
+    `;
+
+    const result = eval(compiledCode);
+    const desired = eval(jsCode);
+
+    expect(result).toEqual(1);
+    expect(result).toStrictEqual(desired);
+  });
+
+  it('evaluates a pipe invocation with a curried function called more than once', () => {
+    const input = `
+state
+pick 'obj2'
+pick 'c'
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    pick('c')(pick('obj2')(state()))
+    `;
+
+    const result = eval(compiledCode);
+    const desired = eval(jsCode);
+
+    expect(result).toEqual(1);
+    expect(result).toStrictEqual(desired);
   });
 });

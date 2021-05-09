@@ -66,10 +66,15 @@ const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
         break;
 
       default:
-        throw new SyntaxError(node.type + ' node type not supported');
+        throw new SyntaxError(node.type + ' type not supported');
     }
   }
 };
+
+
+const exists = (nodes: Node[], node: Node) =>
+  nodes.some(({ value }) => value === node.value)
+
 
 export const transformer = (ast: AST) => {
   let newAst: TransformedAST = {
@@ -82,6 +87,8 @@ export const transformer = (ast: AST) => {
   const traverseWithVisitor = traverse({
     PipeExpression: {
       enter(node: PipeExpression, _: AST) {
+        const alreadyDeclared = exists(newAst.pipeExpressions, node);
+        if (alreadyDeclared) return;
         newAst.pipeExpressions.push(node);
       },
     },
@@ -91,7 +98,12 @@ export const transformer = (ast: AST) => {
       },
     },
     Function: {
-      enter({ value, args }: FunctionExpression, _: PipeExpression) {
+      enter(node: FunctionExpression, _: PipeExpression) {
+        const { value, args } = node;
+
+        const alreadyDeclared = exists(newAst.curriedFns, node);
+        if (alreadyDeclared) return;
+
         if (args?.length) {
           const curryExpression: CurryExpression = {
             type: 'CurryExpression',

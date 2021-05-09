@@ -462,7 +462,7 @@ describe('Transformer: common cases', () => {
     };
 
     expect(() => transformer(input)).toThrowError(
-      `node type not supported`,
+      ` type not supported`,
     );
   });
 });

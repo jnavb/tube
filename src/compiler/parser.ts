@@ -1,16 +1,16 @@
 import {
-    AST,
-    FunctionExpression,
-    Method,
-    Node,
-    NumberLiteral,
-    PipeExpression,
-    PipeInvocation,
-    StringLiteral,
-    SwitchCase,
-    SwitchExpression,
-    Token,
-    Variable
+  AST,
+  FunctionExpression,
+  Method,
+  Node,
+  NumberLiteral,
+  PipeExpression,
+  PipeInvocation,
+  StringLiteral,
+  SwitchCase,
+  SwitchExpression,
+  Token,
+  Variable
 } from '../models';
 
 export const parser = (tokens: Token[]): AST => {
@@ -75,9 +75,9 @@ export const parser = (tokens: Token[]): AST => {
       return unionNode;
     }
 
-    if (token.type === 'SwitchCase') {
+    if (token.type === 'SwitchCase' || token.type === 'DefaultSwitchCase') {
       const switchCase: SwitchCase = {
-        type: 'SwitchCase',
+        type: token.type,
         case: token.case,
         value: token.value,
       };
@@ -88,22 +88,39 @@ export const parser = (tokens: Token[]): AST => {
         return switchCase;
       }
 
-      let switchNode: SwitchExpression = {
+      let switchExpression: SwitchExpression = {
         type: 'SwitchExpression',
-        cases: [switchCase],
+        cases: [],
       };
+
+      if (token.type === 'SwitchCase') {
+        switchExpression.cases.push(switchCase);
+      } else if (token.type === 'DefaultSwitchCase') {
+        switchExpression.default = switchCase;
+      }
 
       insideSwitch = true;
 
-      while (token.type === 'SwitchCase' || token.type === 'NewLine') {
+      while (
+        token?.type === 'SwitchCase' ||
+        token?.type === 'DefaultSwitchCase' ||
+        token?.type === 'NewLine'
+      ) {
         const switchCase = walk() as SwitchCase;
-        switchCase && switchNode.cases.push(switchCase);
+        const type = switchCase?.type;
+
+        if (type === 'SwitchCase') {
+          switchExpression.cases.push(switchCase);
+        } else if (type === 'DefaultSwitchCase') {
+          switchExpression.default = switchCase;
+        }
+
         token = tokens[current];
       }
 
       insideSwitch = false;
 
-      return switchNode;
+      return switchExpression;
     }
 
     if (token.type === 'Negation') {

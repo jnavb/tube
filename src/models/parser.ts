@@ -7,11 +7,11 @@ export type NodeType =
   | 'Variable'
   | 'Method'
   | 'Function'
-  | 'FunctionCurried'
   | 'CurryExpression'
   | 'UnionExpression'
   | 'SwitchExpression'
   | 'SwitchCase'
+  | 'DefaultSwitchCase'
   | 'SideEffect';
 export interface Node {
   type: NodeType;
@@ -22,6 +22,8 @@ export interface Node {
   if?: FunctionExpression;
   else?: FunctionExpression;
   cases?: SwitchCase[];
+  default?: SwitchCase;
+  case?: string;
 }
 
 export interface AST extends Node {
@@ -81,10 +83,11 @@ export interface StringLiteral extends Node {
 export interface SwitchExpression extends Node {
   type: 'SwitchExpression';
   cases: SwitchCase[];
+  default?: SwitchCase;
 }
 
 export interface SwitchCase extends Node {
-  type: 'SwitchCase';
+  type: 'SwitchCase' | 'DefaultSwitchCase';
   case: string;
   value: string;
 }

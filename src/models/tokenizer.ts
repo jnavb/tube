@@ -9,6 +9,7 @@ export type Token = {
     | 'Arrow'
     | 'SideEffect'
     | 'SwitchCase'
+    | 'DefaultSwitchCase'
     | 'Union'
     | 'Variable'
     | 'NewLine'
