@@ -85,7 +85,7 @@ const _generator = (node: Node): string => {
       return switchFn;
     
     case 'SwitchCase':
-      return `${node.case}(x) ? ${node.value}(x)`;
+      return `${node.predicate}(x) ? ${node.value}(x)`;
 
     case 'UnionExpression':
       return `${runtimeNames.union}(${node.childs.map(_generator).join(', ')})`;

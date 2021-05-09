@@ -275,9 +275,9 @@ describe('AST: common cases', () => {
             {
               type: 'SwitchExpression',
               cases: [
-                { type: 'SwitchCase', case: 'isA', value: 'fnA' },
-                { type: 'SwitchCase', case: 'isB', value: 'fnB' },
-                { type: 'SwitchCase', case: 'isC', value: 'fnC' },
+                { type: 'SwitchCase', predicate: 'isA', value: 'fnA' },
+                { type: 'SwitchCase', predicate: 'isB', value: 'fnB' },
+                { type: 'SwitchCase', predicate: 'isC', value: 'fnC' },
               ],
             },
             { type: 'Function', value: 'fn2' },

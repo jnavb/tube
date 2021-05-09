@@ -78,7 +78,7 @@ export const parser = (tokens: Token[]): AST => {
     if (token.type === 'SwitchCase' || token.type === 'DefaultSwitchCase') {
       const switchCase: SwitchCase = {
         type: token.type,
-        case: token.case,
+        predicate: token.case,
         value: token.value,
       };
 
