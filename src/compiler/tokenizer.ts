@@ -14,7 +14,7 @@ export const tokenizer = (input: string): Token[] => {
   let BREAK_LINE = '\r\n';
   let ARROW = /->/;
   let UNION = /U/;
-  let DISABLE_AUTO_CURRY = /\.\.\./;
+  let DISABLE_AUTO_CURRY = /\.\.\.|ary/;
 
   let level = 0;
   let line = 0;
