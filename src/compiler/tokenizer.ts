@@ -7,14 +7,15 @@ export const tokenizer = (input: string): Token[] => {
   let COLON = /:/;
   let DOUBLE_COLON = /::/;
   let NUMBERS_AND_DOT = /[0-9\.]/;
-  let A_TO_Z_AND_DOT = /[a-z0-9\.]/i;
+  let A_TO_Z_AND_DOT = /[a-z0-9\.$]/i;
   let NEGATION = /^(isnt|arent|aint|negate|!)$/i;
   let DEFAULT = /^(default|none)$/i;
   let ARGUMENT = /^(with|for|between|by|at|to|until|and|below|under|on|since|ago|past|into|from|about|through|across|after)$/i;
   let BREAK_LINE = '\r\n';
   let ARROW = /->/;
   let UNION = /U/;
-  let DISABLE_AUTO_CURRY = /\.\.\.|ary/;
+  let VARIADIC = /\.\.\.|ary/;
+  let FLIP = /flip/;
 
   let level = 0;
   let line = 0;
@@ -31,13 +32,27 @@ export const tokenizer = (input: string): Token[] => {
       let char = input[current];
       let nextChar = input[current + 1] || '';
       let nextOfNextChar = input[current + 2] || '';
-      let charAndNextChar = char + nextChar;
+      let nextOfNextCharOfNextChar = input[current + 3] || '';
+
+      let twoLetterWord = char + nextChar;
+      let threeLetterWord = char + nextChar + nextOfNextChar;
+      let fourLetterWord = char + nextChar + nextOfNextChar + nextOfNextCharOfNextChar;
 
       // Disable auto currying
-      if (DISABLE_AUTO_CURRY.test(char + nextChar + nextOfNextChar)) {
+      if (VARIADIC.test(threeLetterWord)) {
         current = current + 3;
         tokens.push({
-          type: 'DisableAutoCurrying',
+          type: 'Variadic',
+        });
+
+        continue;
+      }
+
+      // Disable auto currying
+      if (FLIP.test(fourLetterWord)) {
+        current = current + 4;
+        tokens.push({
+          type: 'Flip',
         });
 
         continue;
@@ -69,7 +84,7 @@ export const tokenizer = (input: string): Token[] => {
       }
 
       // Pipe declaration
-      if (ARROW.test(charAndNextChar)) {
+      if (ARROW.test(twoLetterWord)) {
         current = current + 2;
         tokens.push({
           type: 'Arrow',

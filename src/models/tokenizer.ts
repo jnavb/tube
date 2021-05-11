@@ -14,7 +14,8 @@ export type Token = {
     | 'Variable'
     | 'NewLine'
     | 'EmptyLine'
-    | 'DisableAutoCurrying';
+    | 'Variadic'
+    | 'Flip';
   value?: string;
   level?: number;
   case?: string;

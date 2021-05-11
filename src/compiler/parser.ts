@@ -1,6 +1,7 @@
 import {
   AST,
   DisableAutoCurrying,
+  FlipArguments,
   FunctionStatement,
   Method,
   Node,
@@ -177,9 +178,12 @@ export const parser = (tokens: Token[]): AST => {
           | NumberLiteral
           | StringLiteral
           | Variable
-          | DisableAutoCurrying;
+          | DisableAutoCurrying
+          | FlipArguments;
         if (args.type === 'DisableAutoCurrying') {
           fnNode.disableAutoCurrying = true;
+        } else if (args.type === 'FlipArguments') {
+          fnNode.flipArguments = true;
         } else {
           args && fnNode.args.push(args);
         }
@@ -278,11 +282,19 @@ export const parser = (tokens: Token[]): AST => {
       };
     }
 
-    if (token.type === 'DisableAutoCurrying') {
+    if (token.type === 'Variadic') {
       current++;
 
       return {
         type: 'DisableAutoCurrying'
+      };
+    }
+
+    if (token.type === 'Flip') {
+      current++;
+
+      return {
+        type: 'FlipArguments'
       };
     }
 
