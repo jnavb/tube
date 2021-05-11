@@ -279,4 +279,19 @@ ${runtimeNames.pipe}(state, __tube_curried_pick('n1'), x => addThree(x))();
 
     expect(result).toEqual(expected);
   });
+
+  it('compiles a pipe with flipped arguments using keyword "flip"', () => {
+    const input = `
+state
+returnSecondArgument flip 'n1' 'n2'
+`;
+
+    const result = compile(input);
+    const expected = `
+const __tube_curried_returnSecondArgument = ${runtimeNames.curry}(returnSecondArgument);
+__tube_lang__.pipe(state, __tube_curried_returnSecondArgument('n2', 'n1'))();
+`;
+
+    expect(result).toEqual(expected);
+  });
 });

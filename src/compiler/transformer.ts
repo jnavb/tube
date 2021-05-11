@@ -100,7 +100,7 @@ export const transformer = (ast: AST) => {
     },
     Function: {
       enter(node: FunctionStatement, _: PipeStatement) {
-        const { value, args } = node;
+        const { value, args, flipArguments } = node;
 
         const alreadyDeclared = exists(newAst.curriedFns, node);
         if (alreadyDeclared) return;
@@ -111,6 +111,10 @@ export const transformer = (ast: AST) => {
             value,
           };
           newAst.curriedFns.push(curryExpression);
+
+          if (flipArguments) {
+            node.args.reverse();
+          }
         }
       },
     },

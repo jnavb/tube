@@ -11,11 +11,14 @@ const state = () => ({
   arr2: ['a', 'b', 'c'],
   obj1: { a: 1, b: 'b', c: [4, 5, 6] },
   obj2: { c: 1, d: 'd', f: [] },
-  fn1: () => {}
+  a: { b: 22 },
+  b: { a: 33 },
+  fn1: () => {},
 });
 
 type Mock = ReturnType<typeof state>;
 
+const state$ = () => state();
 const getN1 = ({ n1 }: Mock) => n1;
 const getN2 = ({ n2 }: Mock) => n2;
 const getStr1 = ({ str1 }: Mock) => str1;
@@ -30,16 +33,18 @@ const getTrue = () => true;
 const getFalse = () => false;
 const getNull = () => null;
 const getUndefined = () => undefined;
-const pick = (props) => obj => props.split('.').reduce((acc, v) => acc[v], obj)
-const pickArityUndetermined = (...props) => obj => props.reduce((acc, v) => acc[v], obj)
-const isGreaterThanZero = n => n > 0
-const isLessThanZero = n => n < 0
+const pick = (props) => (obj) =>
+  props.split('.').reduce((acc, v) => acc[v], obj);
+const pickVariadic = (...props) => (obj) =>
+  props.reduce((acc, v) => acc[v], obj);
+const isGreaterThanZero = (n) => n > 0;
+const isLessThanZero = (n) => n < 0;
 
 const isString = (v: any): v is string => typeof v === 'string';
 const isArray = (v: any): v is unknown[] => Array.isArray(v);
 const isEmpty = (v: unknown[]) => Boolean(v.length);
 const noop = (v) => v;
-const booleanFactory = (v: boolean) => () => v
+const booleanFactory = (v: boolean) => () => v;
 
 const append = (str: string) => (v: string) => v + str;
 const appendHello = append('hello');
@@ -51,6 +56,7 @@ const sum = (a: number, b: number) => a + b;
 const addFour = (a: number) => a + 4;
 const addOne = (a: number) => a + 1;
 const duplicateArr = (arr: any[]) => arr.concat(arr);
+const returnSecondArgument = (_, b, obj) => obj[b]
 
 const __tube_lang__ = tube;
 
@@ -674,39 +680,93 @@ pick 'c'
   it('evaluates a pipe with a function with undeterminated arity using keyword "..."', () => {
     const input = `
 state
-pickArityUndetermined ... 'n1'
+pickVariadic ... 'n1'
 `;
 
     const compiledCode = compile(input);
     const jsCode = `
-    let res = pickArityUndetermined('n1')(state())
+    let res = pickVariadic('n1')(state())
     res;
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual(1);
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
   });
 
-  it('evaluates a pipe with a function with undeterminated arity using keyword "ary"', () => {
+  it('evaluates a pipe with a function with undeterminated arity using keyword alias "ary"', () => {
     const input = `
 state
-pickArityUndetermined ary 'n1'
+pickVariadic ary 'n1'
 `;
 
     const compiledCode = compile(input);
     const jsCode = `
-    let res = pickArityUndetermined('n1')(state())
+    let res = pickVariadic('n1')(state())
     res;
     `;
 
     const result = eval(compiledCode);
-    const desired = eval(jsCode);
+    const expected = eval(jsCode);
 
     expect(result).toEqual(1);
-    expect(result).toStrictEqual(desired);
+    expect(result).toStrictEqual(expected);
+  });
+
+  it('evaluates a pipe with a special characters as function name', () => {
+    const input = `
+state$
+getN1
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `getN1(state$())`;
+
+    const result = eval(compiledCode);
+    const expected = eval(jsCode);
+
+    expect(result).toEqual(1);
+    expect(result).toStrictEqual(expected);
+  });
+
+  it('evaluates a pipe with function name and arguments flipped and a variadic function', () => {
+    const input = `
+state
+pickVariadic flip ... 'a' 'b'
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    let res = pickVariadic('b', 'a')(state())
+    res;
+    `;
+
+    const result = eval(compiledCode);
+    const expected = eval(jsCode);
+
+    expect(result).toEqual(33);
+    expect(result).toStrictEqual(expected);
+  });
+
+  it('evaluates a pipe with flipped arguments using keyword "flip"', () => {
+    const input = `
+state
+returnSecondArgument flip 'n1' 'n2'
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    let res = getN1(state())
+    res;
+    `;
+
+    const result = eval(compiledCode);
+    const expected = eval(jsCode);
+
+    expect(result).toEqual(1);
+    expect(result).toStrictEqual(expected);
   });
 
 });

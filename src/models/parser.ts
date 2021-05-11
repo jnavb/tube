@@ -13,7 +13,8 @@ export type NodeType =
   | 'SwitchCase'
   | 'DefaultSwitchCase'
   | 'SideEffect'
-  | 'DisableAutoCurrying';
+  | 'DisableAutoCurrying'
+  | 'FlipArguments';
 export interface Node {
   type: NodeType;
   value?: string;
@@ -26,6 +27,7 @@ export interface Node {
   default?: SwitchCase;
   predicate?: string;
   disableAutoCurrying?: boolean;
+  flipArguments?: boolean;
 }
 
 export interface AST extends Node {
@@ -51,6 +53,7 @@ export interface FunctionStatement extends Node {
   if?: FunctionStatement;
   else?: FunctionStatement;
   disableAutoCurrying?: boolean;
+  flipArguments?: boolean;
 }
 
 export interface UnionStatement extends Node {
@@ -97,4 +100,8 @@ export interface SwitchCase extends Node {
 
 export interface DisableAutoCurrying extends Node {
   type: 'DisableAutoCurrying';
+}
+
+export interface FlipArguments extends Node {
+  type: 'FlipArguments';
 }
