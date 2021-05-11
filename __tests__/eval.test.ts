@@ -671,10 +671,29 @@ pick 'c'
     expect(result).toStrictEqual(expected);
   });
 
-  it('evaluates a pipe with a function with undeterminated arity', () => {
+  it('evaluates a pipe with a function with undeterminated arity using keyword "..."', () => {
     const input = `
 state
 pickArityUndetermined ... 'n1'
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    let res = pickArityUndetermined('n1')(state())
+    res;
+    `;
+
+    const result = eval(compiledCode);
+    const desired = eval(jsCode);
+
+    expect(result).toEqual(1);
+    expect(result).toStrictEqual(desired);
+  });
+
+  it('evaluates a pipe with a function with undeterminated arity using keyword "ary"', () => {
+    const input = `
+state
+pickArityUndetermined ary 'n1'
 `;
 
     const compiledCode = compile(input);
