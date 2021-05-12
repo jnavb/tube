@@ -30,6 +30,7 @@ describe('Transformer: common cases', () => {
             {
               type: 'Function',
               value: 'fnOne',
+              initialFunction: true,
             },
             {
               type: 'Function',
@@ -79,6 +80,7 @@ describe('Transformer: common cases', () => {
             {
               type: 'Function',
               value: 'fnOne',
+              initialFunction: true,
             },
             {
               type: 'Function',
@@ -110,6 +112,7 @@ describe('Transformer: common cases', () => {
             {
               type: 'Function',
               value: 'fnOne',
+              initialFunction: true,
             },
             {
               type: 'Function',
@@ -155,6 +158,7 @@ describe('Transformer: common cases', () => {
             {
               type: 'Function',
               value: 'fnOne',
+              initialFunction: true,
             },
 
             {
@@ -194,7 +198,7 @@ describe('Transformer: common cases', () => {
         {
           type: 'PipeInvocation',
           childs: [
-            { type: 'Function', value: 'fnOne' },
+            { type: 'Function', value: 'fnOne', initialFunction: true },
             { type: 'Function', value: 'fnTwo' },
             {
               type: 'UnionStatement',
@@ -222,6 +226,7 @@ describe('Transformer: common cases', () => {
             {
               type: 'Function',
               value: 'fnOne',
+              initialFunction: true,
             },
             {
               type: 'Function',
@@ -263,7 +268,7 @@ describe('Transformer: common cases', () => {
         {
           type: 'PipeInvocation',
           childs: [
-            { type: 'Function', value: 'fnOne' },
+            { type: 'Function', value: 'fnOne', initialFunction: true },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Function', value: 'fnThree' },
             { type: 'Method', value: 'toString' },
@@ -281,7 +286,7 @@ describe('Transformer: common cases', () => {
         {
           type: 'PipeInvocation',
           childs: [
-            { type: 'Function', value: 'fnOne' },
+            { type: 'Function', value: 'fnOne', initialFunction: true },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Function', value: 'fnThree' },
             { type: 'Method', value: 'toString' },
@@ -300,7 +305,7 @@ describe('Transformer: common cases', () => {
         {
           type: 'PipeInvocation',
           childs: [
-            { type: 'Function', value: 'fnOne' },
+            { type: 'Function', value: 'fnOne', initialFunction: true },
             {
               type: 'Function',
               value: 'fnTwo',
@@ -334,7 +339,7 @@ describe('Transformer: common cases', () => {
         {
           type: 'PipeInvocation',
           childs: [
-            { type: 'Function', value: 'fnOne' },
+            { type: 'Function', value: 'fnOne', initialFunction: true },
             {
               type: 'Function',
               value: 'fnTwo',
@@ -360,7 +365,7 @@ describe('Transformer: common cases', () => {
         {
           type: 'PipeInvocation',
           childs: [
-            { type: 'Function', value: 'fnOne' },
+            { type: 'Function', value: 'fnOne', initialFunction: true },
             { type: 'SideEffect', value: 'sideEffectOne' },
             {
               type: 'Function',
@@ -386,7 +391,7 @@ describe('Transformer: common cases', () => {
         {
           type: 'PipeInvocation',
           childs: [
-            { type: 'Function', value: 'fnOne' },
+            { type: 'Function', value: 'fnOne', initialFunction: true },
             { type: 'SideEffect', value: 'sideEffectOne' },
             {
               type: 'Function',
@@ -408,7 +413,7 @@ describe('Transformer: common cases', () => {
         {
           type: 'PipeInvocation',
           childs: [
-            { type: 'Function', value: 'fn1' },
+            { type: 'Function', value: 'fn1', initialFunction: true },
             {
               type: 'SwitchStatement',
               cases: [
@@ -432,7 +437,7 @@ describe('Transformer: common cases', () => {
         {
           type: 'PipeInvocation',
           childs: [
-            { type: 'Function', value: 'fn1' },
+            { type: 'Function', value: 'fn1', initialFunction: true },
             {
               type: 'SwitchStatement',
               cases: [
@@ -461,8 +466,6 @@ describe('Transformer: common cases', () => {
       ],
     };
 
-    expect(() => transformer(input)).toThrowError(
-      ` type not supported`,
-    );
+    expect(() => transformer(input)).toThrowError(` type not supported`);
   });
 });

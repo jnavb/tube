@@ -57,6 +57,7 @@ const addFour = (a: number) => a + 4;
 const addOne = (a: number) => a + 1;
 const duplicateArr = (arr: any[]) => arr.concat(arr);
 const returnSecondArgument = (_, b, obj) => obj[b]
+const createDate = date => new Date(date)
 
 const __tube_lang__ = tube;
 
@@ -391,23 +392,6 @@ state
       const expected = eval(jsCode);
 
       expect(result).toEqual(true);
-      expect(result).toStrictEqual(expected);
-    });
-
-    it('evaluates an function with boolean primitives', () => {
-      const input = `
-booleanFactory false
-`;
-
-      const compiledCode = compile(input);
-      const jsCode = `
-      booleanFactory(false)()
-      `;
-
-      const result = eval(compiledCode);
-      const expected = eval(jsCode);
-
-      expect(result).toEqual(false);
       expect(result).toStrictEqual(expected);
     });
 
@@ -767,6 +751,32 @@ returnSecondArgument flip 'n1' 'n2'
 
     expect(result).toEqual(1);
     expect(result).toStrictEqual(expected);
+  });
+
+  it('evaluates a pipe with arguments at first function', () => {
+    const input = `
+createDate for '1995-12-17T03:24:00'
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    createDate('1995-12-17T03:24:00')
+    `;
+
+    const result = eval(compiledCode);
+    const expected = eval(jsCode);
+
+    expect(result).toStrictEqual(expected);
+  });
+
+  it('throws an error when first function is not nullary or unary', () => {
+    const input = `
+createDate for '1995-12-17T03:24:00' and 3
+`;
+
+    expect(() => compile(input)).toThrowError(
+      `Invalid first function of pipe. Only nullary or unary functions allowed`,
+    );
   });
 
 });

@@ -3,9 +3,8 @@ import {
   CurryStatement,
   FunctionStatement,
   Node,
-
-  PipeInvocation, PipeStatement,
-
+  PipeInvocation,
+  PipeStatement,
   TransformedAST,
   Visitor
 } from '../models';
@@ -72,10 +71,8 @@ const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
   }
 };
 
-
 const exists = (nodes: Node[], node: Node) =>
-  nodes.some(({ value }) => value === node.value)
-
+  nodes.some(({ value }) => value === node.value);
 
 export const transformer = (ast: AST) => {
   let newAst: TransformedAST = {
@@ -95,17 +92,35 @@ export const transformer = (ast: AST) => {
     },
     PipeInvocation: {
       enter(node: PipeInvocation, _: AST) {
+        const firstChild = node.childs[0];
+        const firstChildArgs = firstChild.args ?? [] as any;
+        firstChild.initialFunction = true;
+
+        if (firstChildArgs.length > 1) {
+          throw new TypeError(
+            `Invalid first function of pipe. Only nullary or unary functions allowed`,
+          );
+        }
+
+        const firstArgumentOfFirstFunction = firstChildArgs[0];
+        if (firstArgumentOfFirstFunction) {
+          node.arg = firstArgumentOfFirstFunction;
+        }
+
         newAst.pipeInvocations.push(node);
       },
     },
     Function: {
       enter(node: FunctionStatement, _: PipeStatement) {
-        const { value, args, flipArguments } = node;
+        const { value, args, flipArguments, initialFunction } = node;
+
+        if (initialFunction)
+          delete node.args;
 
         const alreadyDeclared = exists(newAst.curriedFns, node);
         if (alreadyDeclared) return;
 
-        if (args?.length) {
+        if (args?.length && !initialFunction) {
           const curryExpression: CurryStatement = {
             type: 'CurryStatement',
             value,
