@@ -43,23 +43,24 @@ const _generator = (node: Node): string => {
       return leftHandSide + ' = ' + rightHandSide + ';';
 
     case 'PipeInvocation':
+      const { arg } = node;
       const pipeIIPE = `${runtimeNames.pipe}(${node.childs
         .map(_generator)
         .join(', ')})`;
+      const argWithParenthesis = arg ? `(${_generator(arg)})` : '()';
 
-      return pipeIIPE + '();';
+      return `${pipeIIPE}${argWithParenthesis};`;
 
     case 'Function':
       let fn = '';
+      const { disableAutoCurrying } = node;
       args = node.args?.map(_generator).join(', ') || '';
-      const invocation = args
-        ? `(${args})`
-        : '';
+      const argsWithParenthesis = args ? `(${args})` : '';
 
-      if (!args || node.disableAutoCurrying) {
-        fn = `${node.value}${invocation}`;
+      if (!args || disableAutoCurrying) {
+        fn = `${node.value}${argsWithParenthesis}`;
       } else {
-        fn = `${getNameOfFunctionCurried(node.value)}${invocation}`;
+        fn = `${getNameOfFunctionCurried(node.value)}${argsWithParenthesis}`;
       }
 
       if (node.negated) {
@@ -78,15 +79,13 @@ const _generator = (node: Node): string => {
 
     case 'SwitchStatement':
       const cases = node.cases.map(_generator).join(' : ');
-      const defaultClause = node.default
-        ? `${node.default.value}(x)`
-        : 'x'
+      const defaultClause = node.default ? `${node.default.value}(x)` : 'x';
       const switchFn = cases
         ? `x => ${cases} : ${defaultClause}`
-        : `x => ${defaultClause}`
+        : `x => ${defaultClause}`;
 
       return switchFn;
-    
+
     case 'SwitchCase':
       return `${node.predicate}(x) ? ${node.value}(x)`;
 

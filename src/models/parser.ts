@@ -28,6 +28,8 @@ export interface Node {
   predicate?: string;
   disableAutoCurrying?: boolean;
   flipArguments?: boolean;
+  initialFunction?: boolean;
+  arg?: NumberLiteral | StringLiteral | Variable;
 }
 
 export interface AST extends Node {
@@ -43,6 +45,7 @@ export interface PipeStatement extends Node {
 export interface PipeInvocation extends Node {
   type: 'PipeInvocation';
   childs: Node[];
+  arg?: NumberLiteral | StringLiteral | Variable;
 }
 
 export interface FunctionStatement extends Node {
@@ -54,6 +57,7 @@ export interface FunctionStatement extends Node {
   else?: FunctionStatement;
   disableAutoCurrying?: boolean;
   flipArguments?: boolean;
+  initialFunction?: boolean;
 }
 
 export interface UnionStatement extends Node {

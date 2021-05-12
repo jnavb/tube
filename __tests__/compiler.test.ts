@@ -294,4 +294,18 @@ __tube_lang__.pipe(state, __tube_curried_returnSecondArgument('n2', 'n1'))();
 
     expect(result).toEqual(expected);
   });
+
+
+  it('compiles a pipe with arguments at first function', () => {
+    const input = `
+createDate for '1995-12-17T03:24:00'
+`;
+
+    const result = compile(input);
+    const expected = `
+__tube_lang__.pipe(createDate)('1995-12-17T03:24:00');
+`;
+
+    expect(result).toEqual(expected);
+  });
 });
