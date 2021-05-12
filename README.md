@@ -27,8 +27,9 @@ $ npm i lodash
 
 ```js
 const __tube_lang__ = require('tube-lang')
+const { compile } = __tube_lang__
 
-const jsCode = a.compile(tubeCode)
+const jsCode = compile(tubeCode)
 
 eval(jsCode)
 ```
