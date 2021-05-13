@@ -289,7 +289,23 @@ returnSecondArgument flip 'n1' 'n2'
     const result = compile(input);
     const expected = `
 const __tube_curried_returnSecondArgument = ${runtimeNames.curry}(returnSecondArgument);
-__tube_lang__.pipe(state, __tube_curried_returnSecondArgument('n2', 'n1'))();
+__tube_lang__.pipe(state, x => __tube_curried_returnSecondArgument(x)('n2', 'n1'))();
+`;
+
+    expect(result).toEqual(expected);
+  });
+
+  it('evaluates a pipe with flipped arguments using keyword "flip"', () => {
+    const input = `
+state
+getN1
+subtract flip 1000
+`;
+
+    const result = compile(input);
+    const expected = `
+const __tube_curried_subtract = __tube_lang__.curry(subtract);
+__tube_lang__.pipe(state, getN1, x => __tube_curried_subtract(x)(1000))();
 `;
 
     expect(result).toEqual(expected);

@@ -53,10 +53,11 @@ const first = (v: any[]) => v[0];
 const last = (v: any[]) => v[v.length - 1];
 const returnFalse = () => false;
 const sum = (a: number, b: number) => a + b;
+const subtract = (a, b) => a - b
 const addFour = (a: number) => a + 4;
 const addOne = (a: number) => a + 1;
 const duplicateArr = (arr: any[]) => arr.concat(arr);
-const returnSecondArgument = (_, b, obj) => obj[b]
+const returnThirdArgument = (obj, _, b) => obj[b]
 const createDate = date => new Date(date)
 
 const __tube_lang__ = tube;
@@ -715,29 +716,10 @@ getN1
     expect(result).toStrictEqual(expected);
   });
 
-  it('evaluates a pipe with function name and arguments flipped and a variadic function', () => {
-    const input = `
-state
-pickVariadic flip ... 'a' 'b'
-`;
-
-    const compiledCode = compile(input);
-    const jsCode = `
-    let res = pickVariadic('b', 'a')(state())
-    res;
-    `;
-
-    const result = eval(compiledCode);
-    const expected = eval(jsCode);
-
-    expect(result).toEqual(33);
-    expect(result).toStrictEqual(expected);
-  });
-
   it('evaluates a pipe with flipped arguments using keyword "flip"', () => {
     const input = `
 state
-returnSecondArgument flip 'n1' 'n2'
+returnThirdArgument flip 'n1' 'n2'
 `;
 
     const compiledCode = compile(input);
@@ -750,6 +732,26 @@ returnSecondArgument flip 'n1' 'n2'
     const expected = eval(jsCode);
 
     expect(result).toEqual(1);
+    expect(result).toStrictEqual(expected);
+  });
+
+  it('evaluates a pipe with flipped arguments using keyword "flip"', () => {
+    const input = `
+state
+getN1
+subtract flip 1000
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    let res = subtract(getN1(state()), 1000)
+    res;
+    `;
+
+    const result = eval(compiledCode);
+    const expected = eval(jsCode);
+
+    expect(result).toEqual(-999);
     expect(result).toStrictEqual(expected);
   });
 
