@@ -73,6 +73,8 @@ const _generator = (node: Node): string => {
         )})(x)`;
       } else if (node.if) {
         fn = `x => ${fn}(x) ? (${_generator(node.if)})(x) : x`;
+      } else if (node.flipArguments) {
+        fn = `x => ${getNameOfFunctionCurried(node.value)}(x)${argsWithParenthesis}`;
       }
 
       return fn;
