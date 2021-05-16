@@ -93,7 +93,7 @@ export const transformer = (ast: AST) => {
     PipeInvocation: {
       enter(node: PipeInvocation, _: AST) {
         const firstChild = node.childs[0];
-        const firstChildArgs = firstChild.args ?? [] as any;
+        const firstChildArgs = firstChild.args ?? ([] as any);
         firstChild.initialFunction = true;
 
         if (firstChildArgs.length > 1) {
@@ -112,15 +112,20 @@ export const transformer = (ast: AST) => {
     },
     Function: {
       enter(node: FunctionStatement, _: PipeStatement) {
-        const { value, args, flipArguments, initialFunction } = node;
+        const {
+          value,
+          args,
+          flipArguments,
+          initialFunction,
+          disableAutoCurrying,
+        } = node;
 
-        if (initialFunction)
-          delete node.args;
+        if (initialFunction) delete node.args;
 
         const alreadyDeclared = exists(newAst.curriedFns, node);
         if (alreadyDeclared) return;
 
-        if (args?.length && !initialFunction) {
+        if (args?.length && !initialFunction && !disableAutoCurrying) {
           const curryExpression: CurryStatement = {
             type: 'CurryStatement',
             value,

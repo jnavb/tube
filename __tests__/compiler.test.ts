@@ -324,4 +324,24 @@ __tube_lang__.pipe(createDate)('1995-12-17T03:24:00');
 
     expect(result).toEqual(expected);
   });
+
+  it('compiles a pipe invocation and a pipe statement with variadic functions', () => {
+    const input = `
+-> upgradeRoom
+    set ... 'rooms.type'
+
+
+myBooking
+upgradeRoom ... to 'suite'
+
+`;
+
+    const result = compile(input);
+    const expected = `
+const upgradeRoom = __tube_lang__.pipe(set('rooms.type'));
+__tube_lang__.pipe(myBooking, upgradeRoom('suite'))();
+`;
+
+    expect(result).toEqual(expected);
+  });
 });
