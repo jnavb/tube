@@ -344,4 +344,22 @@ __tube_lang__.pipe(myBooking, upgradeRoom('suite'))();
 
     expect(result).toEqual(expected);
   });
+
+  it('evaluates a pipe with arguments at first function', () => {
+    const input = `
+-> fnPipeOne
+    noop
+
+-> useFnPipeOneInside
+    fnPipeOne 'a'
+`;
+
+    const result = compile(input);
+    const expected = `
+const fnPipeOne = __tube_lang__.pipe(noop);
+const useFnPipeOneInside = __tube_lang__.pipe(fnPipeOne('a'));
+`;
+
+    expect(result).toEqual(expected);
+  });
 });

@@ -93,6 +93,7 @@ describe('Transformer: common cases', () => {
             {
               type: 'Function',
               value: 'fnABC',
+              disableAutoCurrying: true,
             },
           ],
         },
