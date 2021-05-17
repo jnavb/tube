@@ -125,6 +125,12 @@ export const transformer = (ast: AST) => {
         const alreadyDeclared = exists(newAst.curriedFns, node);
         if (alreadyDeclared) return;
 
+        const isPipeExpression = exists(newAst.pipeExpressions, node);
+        if (isPipeExpression) {
+          node.disableAutoCurrying = true;
+          return;
+        }
+
         if (args?.length && !initialFunction && !disableAutoCurrying) {
           const curryExpression: CurryStatement = {
             type: 'CurryStatement',
