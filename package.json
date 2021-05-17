@@ -1,6 +1,6 @@
 {
   "name": "tube-lang",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "description": "Tube is a declarative, completely unneeded, functional language that compiles into Javascript.",
   "main": "dist/src/main.js",
   "devDependencies": {
