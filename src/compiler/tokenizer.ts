@@ -10,7 +10,7 @@ export const tokenizer = (input: string): Token[] => {
   let A_TO_Z_AND_DOT = /[a-z0-9\.$]/i;
   let NEGATION = /^(isnt|arent|aint|negate|!)$/i;
   let DEFAULT = /^(default|none)$/i;
-  let ARGUMENT = /^(than|with|without|for|between|by|at|to|until|and|below|under|on|since|ago|past|into|from|about|through|across|after)$/i;
+  let ARGUMENT = /^(than|with|without|for|between|by|at|to|until|and|or|below|under|on|since|ago|past|into|from|about|through|across|after)$/i;
   let BREAK_LINE = '\r\n';
   let ARROW = /->/;
   let UNION = /U/;
