@@ -74,23 +74,6 @@ const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
 const exists = (nodes: Node[], node: Node) =>
   nodes.some(({ value }) => value === node.value);
 
-const modifyFirstChild = node => {
-  const firstChild = node.childs[0];
-  const firstChildArgs = firstChild.args ?? ([] as any);
-  firstChild.initialFunction = true;
-
-  if (firstChildArgs.length > 1) {
-    throw new TypeError(
-      `Invalid first function of pipe. Only nullary or unary functions allowed`,
-    );
-  }
-
-  const firstArgumentOfFirstFunction = firstChildArgs[0];
-  if (firstArgumentOfFirstFunction) {
-    node.arg = firstArgumentOfFirstFunction;
-  }
-}
-
 export const transformer = (ast: AST) => {
   let newAst: TransformedAST = {
     type: 'Program',
@@ -109,8 +92,6 @@ export const transformer = (ast: AST) => {
     },
     PipeInvocation: {
       enter(node: PipeInvocation, _: AST) {
-        modifyFirstChild(node);
-
         newAst.pipeInvocations.push(node);
       },
     },
@@ -122,12 +103,15 @@ export const transformer = (ast: AST) => {
           flipArguments,
           initialFunction,
           disableAutoCurrying,
+          defer,
         } = node;
 
         if (initialFunction) delete node.args;
 
         const alreadyDeclared = exists(newAst.curriedFns, node);
         if (alreadyDeclared) return;
+
+        if (defer) return;
 
         const isPipeExpression = exists(newAst.pipeExpressions, node);
         if (isPipeExpression) {

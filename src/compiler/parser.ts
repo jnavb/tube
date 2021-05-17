@@ -1,5 +1,6 @@
 import {
   AST,
+
   DisableAutoCurrying,
   FlipArguments,
   FunctionStatement,
@@ -39,6 +40,7 @@ export const parser = (tokens: Token[]): AST => {
   function walk(): Node {
     let token = tokens[current];
     let negated = false;
+    let defer = false;
 
     if (!token || token.type === 'EmptyLine') {
       currentLevel = 0;
@@ -134,6 +136,11 @@ export const parser = (tokens: Token[]): AST => {
       token = tokens[++current];
     }
 
+    if (token.type === 'Defer') {
+      defer = true;
+      token = tokens[++current];
+    }
+
     if (token.type === 'Arrow') {
       token = tokens[++current];
 
@@ -167,9 +174,11 @@ export const parser = (tokens: Token[]): AST => {
         value: token.value,
         args: [],
         ...(negated && { negated }),
+        ...(defer && { defer }),
       };
 
       negated = false;
+      defer = false;
 
       token = tokens[++current];
 
@@ -295,6 +304,14 @@ export const parser = (tokens: Token[]): AST => {
 
       return {
         type: 'FlipArguments'
+      };
+    }
+
+    if (token.type === 'Defer') {
+      current++;
+
+      return {
+        type: 'Defer'
       };
     }
 

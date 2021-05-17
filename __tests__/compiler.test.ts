@@ -312,14 +312,27 @@ __tube_lang__.pipe(state, getN1, x => __tube_curried_subtract(x)(1000))();
   });
 
 
-  it('compiles a pipe with arguments at first function', () => {
+  it('compiles a pipe with a defered function with one argument', () => {
     const input = `
-createDate for '1995-12-17T03:24:00'
+defer createDate for '1995-12-17T03:24:00'
 `;
 
     const result = compile(input);
     const expected = `
-__tube_lang__.pipe(createDate)('1995-12-17T03:24:00');
+__tube_lang__.pipe(() => createDate('1995-12-17T03:24:00'))();
+`;
+
+    expect(result).toEqual(expected);
+  });
+
+  it('compiles a pipe a defered function with several arguments', () => {
+    const input = `
+defer createDate for 'a' and 'b'
+`;
+
+    const result = compile(input);
+    const expected = `
+__tube_lang__.pipe(() => createDate('a', 'b'))();
 `;
 
     expect(result).toEqual(expected);
@@ -345,7 +358,7 @@ __tube_lang__.pipe(myBooking, upgradeRoom('suite'))();
     expect(result).toEqual(expected);
   });
 
-  it('evaluates a pipe with arguments at first function', () => {
+  it('compiles nested pipe statements', () => {
     const input = `
 -> fnPipeOne
     noop
@@ -358,6 +371,20 @@ __tube_lang__.pipe(myBooking, upgradeRoom('suite'))();
     const expected = `
 const fnPipeOne = __tube_lang__.pipe(noop);
 const useFnPipeOneInside = __tube_lang__.pipe(fnPipeOne('a'));
+`;
+
+    expect(result).toEqual(expected);
+  });
+
+  it('compiles a defer function', () => {
+    const input = `
+defer fnOne 'a'
+noop
+`;
+
+    const result = compile(input);
+    const expected = `
+__tube_lang__.pipe(() => fnOne('a'), noop)();
 `;
 
     expect(result).toEqual(expected);
