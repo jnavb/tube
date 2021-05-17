@@ -16,6 +16,7 @@ export const tokenizer = (input: string): Token[] => {
   let UNION = /U/;
   let VARIADIC = /\.\.\.|ary/;
   let FLIP = /flip/;
+  let DEFER = /defer/;
 
   let level = 0;
   let line = 0;
@@ -324,6 +325,10 @@ export const tokenizer = (input: string): Token[] => {
 
           tokens.push({
             type: 'Negation',
+          });
+        } else if (DEFER.test(value)) {
+          tokens.push({
+            type: 'Defer',
           });
         } else if (ARGUMENT.test(value)) {
           argumentPos = tokens.length;

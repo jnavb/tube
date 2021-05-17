@@ -757,7 +757,7 @@ subtract flip 1000
 
   it('evaluates a pipe with arguments at first function', () => {
     const input = `
-createDate for '1995-12-17T03:24:00'
+defer createDate for '1995-12-17T03:24:00'
 `;
 
     const compiledCode = compile(input);
@@ -769,16 +769,6 @@ createDate for '1995-12-17T03:24:00'
     const expected = eval(jsCode);
 
     expect(result).toStrictEqual(expected);
-  });
-
-  it('throws an error when first function is not nullary or unary', () => {
-    const input = `
-createDate for '1995-12-17T03:24:00' and 3
-`;
-
-    expect(() => compile(input)).toThrowError(
-      `Invalid first function of pipe. Only nullary or unary functions allowed`,
-    );
   });
 
 });

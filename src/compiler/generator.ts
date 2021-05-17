@@ -43,11 +43,10 @@ const _generator = (node: Node): string => {
       return leftHandSide + ' = ' + rightHandSide + ';';
 
     case 'PipeInvocation':
-      const { arg } = node;
       const pipeIIPE = `${runtimeNames.pipe}(${node.childs
         .map(_generator)
         .join(', ')})`;
-      const argWithParenthesis = arg ? `(${_generator(arg)})` : '()';
+      const argWithParenthesis = '()';
 
       return `${pipeIIPE}${argWithParenthesis};`;
 
@@ -56,25 +55,30 @@ const _generator = (node: Node): string => {
       const { disableAutoCurrying } = node;
       args = node.args?.map(_generator).join(', ') || '';
       const argsWithParenthesis = args ? `(${args})` : '';
+      const deferFn = node.defer ? '() => ' : '';
 
-      if (!args || disableAutoCurrying) {
-        fn = `${node.value}${argsWithParenthesis}`;
+      if (!args || disableAutoCurrying || node.defer) {
+        fn = `${deferFn}${node.value}${argsWithParenthesis}`;
       } else {
-        fn = `${getNameOfFunctionCurried(node.value)}${argsWithParenthesis}`;
+        fn = `${deferFn}${getNameOfFunctionCurried(
+          node.value,
+        )}${argsWithParenthesis}`;
       }
 
       if (node.negated) {
-        fn = `${runtimeNames.negate}(${fn})`;
+        fn = `${deferFn}${runtimeNames.negate}(${fn})`;
       }
 
       if (node.else) {
-        fn = `x => ${fn}(x) ? (${_generator(node.if)})(x) : (${_generator(
-          node.else,
-        )})(x)`;
+        fn = `${deferFn}x => ${fn}(x) ? (${_generator(
+          node.if,
+        )})(x) : (${_generator(node.else)})(x)`;
       } else if (node.if) {
-        fn = `x => ${fn}(x) ? (${_generator(node.if)})(x) : x`;
+        fn = `${deferFn}x => ${fn}(x) ? (${_generator(node.if)})(x) : x`;
       } else if (node.flipArguments) {
-        fn = `x => ${getNameOfFunctionCurried(node.value)}(x)${argsWithParenthesis}`;
+        fn = `${deferFn}x => ${getNameOfFunctionCurried(
+          node.value,
+        )}(x)${argsWithParenthesis}`;
       }
 
       return fn;
