@@ -18,6 +18,14 @@ export const tokenizer = (input: string): Token[] => {
   let FLIP = /flip$/;
   let DEFER = /defer$/;
 
+  let succedingFunctionTokens = new Set([
+    'Function',
+    'String',
+    'Number',
+    'Variable',
+    'Variadic'
+  ]);
+
   let level = 0;
   let line = 0;
   let lineFirstCharIndex = 0;
@@ -335,10 +343,7 @@ export const tokenizer = (input: string): Token[] => {
 
           continue;
         } else if (
-          LAST_TOKEN?.type === 'Function' ||
-          LAST_TOKEN?.type === 'String' ||
-          LAST_TOKEN?.type === 'Number' ||
-          LAST_TOKEN?.type === 'Variable'
+          succedingFunctionTokens.has(LAST_TOKEN?.type)
         ) {
           tokens.push({
             type: 'Variable',

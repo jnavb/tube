@@ -389,4 +389,17 @@ __tube_lang__.pipe(() => fnOne('a'), noop)();
 
     expect(result).toEqual(expected);
   });
+
+  it('compiles a variadic function', () => {
+    const input = `
+qwer ... var1
+`;
+
+    const result = compile(input);
+    const expected = `
+__tube_lang__.pipe(qwer(var1))();
+`;
+
+    expect(result).toEqual(expected);
+  });
 });
