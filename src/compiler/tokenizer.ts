@@ -15,8 +15,8 @@ export const tokenizer = (input: string): Token[] => {
   let ARROW = /->/;
   let UNION = /U/;
   let VARIADIC = /\.\.\.|ary/;
-  let FLIP = /flip/;
-  let DEFER = /defer/;
+  let FLIP = /flip$/;
+  let DEFER = /defer$/;
 
   let level = 0;
   let line = 0;

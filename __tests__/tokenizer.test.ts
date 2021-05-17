@@ -381,6 +381,22 @@ fnThree
     expect(result).toStrictEqual(expected);
   });
 
+  it('tokenize a pipe invocation with a defer', () => {
+    const input = `
+defer deferr
+`;
+
+    const result = tokenizer(input);
+    const expected: Token[] = [
+      { type: 'NewLine', level: 0 },
+      { type: 'Defer' },
+      { type: 'Function', value: 'deferr' },
+      { level: 0, type: 'NewLine' },
+    ];
+
+    expect(result).toStrictEqual(expected);
+  });
+
   it('should reject an invalid character', () => {
     const input = `
 fnOne
@@ -668,7 +684,6 @@ fnTwo
         `Switch clause not allowed without one space after case declaration`,
       );
     });
-
   });
 
   describe('Tokenizer: edge cases for switch clauses', () => {
@@ -697,6 +712,5 @@ fnTwo
         `Brancher invocation not allowed with more than one space after brancher declaration`,
       );
     });
-
   });
 });
