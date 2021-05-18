@@ -428,4 +428,17 @@ __tube_lang__.pipe(y => fnOne(var1)(y))();
 
     expect(result).toEqual(expected);
   });
+
+  it('compiles a aggregator function', () => {
+    const input = `
+aggregate pipeOne pipeTwo
+`;
+
+    const result = compile(input);
+    const expected = `
+__tube_lang__.pipe(z => ([pipeOne(z), pipeTwo(z)]))();
+`;
+
+    expect(result).toEqual(expected);
+  });
 });

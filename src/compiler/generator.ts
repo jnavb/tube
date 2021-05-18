@@ -1,4 +1,5 @@
 import { Node, TransformedAST } from '../models';
+import { AGREGGATOR } from '../models/keywords';
 
 const packageName = '__tube_lang__';
 
@@ -55,19 +56,20 @@ const _generator = (node: Node): string => {
       const { disableAutoCurrying } = node;
       args = node.args?.map(_generator).join(', ') || '';
       const argsWithParenthesis = args ? `(${args})` : '';
-      const defer = node.defer
-        ? f => `() => ${f}`
-        : f => f;
-      const wrap = node.wrap
-        ? f => `y => ${f}(y)`
-        : f => f;
+      const defer = node.defer ? (f) => `() => ${f}` : (f) => f;
+      const wrap = node.wrap ? (f) => `y => ${f}(y)` : (f) => f;
+
+      if (AGREGGATOR.test(node.value)) {
+        return `z => ([${args
+          .split(', ')
+          .map((f) => f + '(z)')
+          .join(', ')}])`;
+      }
 
       if (!args || disableAutoCurrying) {
         fn = `${node.value}${argsWithParenthesis}`;
       } else {
-        fn = `${getNameOfFunctionCurried(
-          node.value,
-        )}${argsWithParenthesis}`;
+        fn = `${getNameOfFunctionCurried(node.value)}${argsWithParenthesis}`;
       }
 
       if (node.negated) {
@@ -75,9 +77,9 @@ const _generator = (node: Node): string => {
       }
 
       if (node.else) {
-        fn = `x => ${fn}(x) ? (${_generator(
-          node.if,
-        )})(x) : (${_generator(node.else)})(x)`;
+        fn = `x => ${fn}(x) ? (${_generator(node.if)})(x) : (${_generator(
+          node.else,
+        )})(x)`;
       } else if (node.if) {
         fn = `x => ${fn}(x) ? (${_generator(node.if)})(x) : x`;
       } else if (node.flipArguments) {
@@ -101,7 +103,9 @@ const _generator = (node: Node): string => {
       return `${node.predicate}(x) ? ${node.value}(x)`;
 
     case 'UnionStatement':
-      return `${runtimeNames.union}(${node.children.map(_generator).join(', ')})`;
+      return `${runtimeNames.union}(${node.children
+        .map(_generator)
+        .join(', ')})`;
 
     case 'Number':
     case 'Variable':
