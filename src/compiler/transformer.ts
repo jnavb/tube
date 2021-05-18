@@ -19,20 +19,20 @@ const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
       fns.enter(n, p);
     }
 
-    exploreChilds(n);
+    explorechildren(n);
 
     if (fns && fns.exit) {
       fns.exit(n, p);
     }
   }
 
-  function exploreChilds(node: Node) {
+  function explorechildren(node: Node) {
     switch (node.type) {
       case 'Program':
       case 'PipeStatement':
       case 'PipeInvocation':
       case 'UnionStatement':
-        node.childs.forEach((child) => {
+        node.children.forEach((child) => {
           traverseNode(child, node);
         });
         break;
@@ -64,6 +64,7 @@ const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
       case 'SideEffect':
       case 'Variable':
       case 'Wrap':
+      case 'Aggregate':
         break;
 
       default:
