@@ -1,26 +1,35 @@
-# TUBE
-[![TypeScript version][ts-badge]][typescript-4-2]
-[![Build Status - Travis][travis-badge]][travis-ci]
-[![Codacy Badge](https://app.codacy.com/project/badge/Coverage/c29a6e18767e41ed8d47c5d295305afd)](https://www.codacy.com/gh/jnavb/TUBE/dashboard?utm_source=github.com&utm_medium=referral&utm_content=jnavb/TUBE&utm_campaign=Badge_Coverage)
-![Latest version](https://img.shields.io/github/v/release/jnavb/TUBE)
+# ![Latest version](https://img.shields.io/npm/v/tube-lang) [![TypeScript version][ts-badge]][typescript-4-2] [![Build Status - Travis][travis-badge]][travis-ci] [![Codacy Badge](https://app.codacy.com/project/badge/Coverage/c29a6e18767e41ed8d47c5d295305afd)](https://www.codacy.com/gh/jnavb/TUBE/dashboard?utm_source=github.com&utm_medium=referral&utm_content=jnavb/TUBE&utm_campaign=Badge_Coverage)
 
 
+<p align="center">
+  <img src="assets/logo.png" alt="tube-logo" width="120px" height="120px"/>
+  <br>
+  <br>
+Tube is a declarative, completely unneeded, functionalish language that compiles into Javascript.
+  <br>
+  <br>
+</p>
 
 
-Tube is a declarative, auto-curried, completely unneeded, functional language that compiles into Javascript.
 
 ## Motivation
 
-After reading the amazing [super tiny compiler](https://github.com/jamiebuilds/the-super-tiny-compiler) repository I became more interested about compilers. The idea of build one yourself for a made up language kept growing and this is the result.
+After reading the amazing [super tiny compiler](https://github.com/jamiebuilds/the-super-tiny-compiler) repository I became more interested about compilers. The idea of build one yourself kept growing and this is the result.
 
-It is a subset of Javascript, you still need some JS code in order to work.
+ Note: Tube is a subset of Javascript, you still need some JS code in order to work.
 
+## Documentation
+
+You can learn the fundamentals and see some examples on the [documentation website](https://tube-lang.netlify.app/)
+
+## Online editor
+
+Compile and run your tube code on the online [playground](https://tube-lang.netlify.app/playground)
 ## Installation
 
 
 ```shell
-$ npm i -g npm
-$ npm i lodash
+$ npm i tube-lang
 ```
 
 ## Usage
@@ -29,9 +38,12 @@ $ npm i lodash
 const __tube_lang__ = require('tube-lang')
 const { compile } = __tube_lang__
 
-const jsCode = compile(tubeCode)
+const greet = str => 'Hello' + str + '!'
+const tubeCode = `greet to 'World'`
 
-eval(jsCode)
+const compiledTubeCode = compile(tubeCode)
+
+eval(compiledTubeCode) // Hello World!
 ```
 
 ## Roadmap
@@ -46,7 +58,16 @@ eval(jsCode)
 
 :white_check_mark:  NPM package
 
-:black_square_button:  Web Editor 
+:white_check_mark:  Web Editor 
+
+### TBD
+:black_square_button: Right Left for handling errors
+
+:black_square_button: Switch clauses with arguments
+
+:black_square_button: Async support via keywords
+
+:black_square_button: Comments
 
 
 [ts-badge]: https://img.shields.io/badge/TypeScript-4.2-blue.svg
