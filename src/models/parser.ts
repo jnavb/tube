@@ -15,6 +15,7 @@ export type NodeType =
   | 'SideEffect'
   | 'DisableAutoCurrying'
   | 'FlipArguments'
+  | 'Wrap'
   | 'Defer';
 export interface Node {
   type: NodeType;
@@ -32,6 +33,7 @@ export interface Node {
   initialFunction?: boolean;
   arg?: NumberLiteral | StringLiteral | Variable;
   defer?: boolean;
+  wrap?: boolean;
 }
 
 export interface AST extends Node {
@@ -61,6 +63,7 @@ export interface FunctionStatement extends Node {
   flipArguments?: boolean;
   initialFunction?: boolean;
   defer?: boolean;
+  wrap?: boolean;
 }
 
 export interface UnionStatement extends Node {
@@ -115,4 +118,8 @@ export interface FlipArguments extends Node {
 
 export interface Defer extends Node {
   type: 'Defer';
+}
+
+export interface Wrap extends Node {
+  type: 'Wrap';
 }

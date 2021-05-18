@@ -63,6 +63,7 @@ const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
       case 'SwitchCase':
       case 'SideEffect':
       case 'Variable':
+      case 'Wrap':
         break;
 
       default:
@@ -104,6 +105,7 @@ export const transformer = (ast: AST) => {
           initialFunction,
           disableAutoCurrying,
           defer,
+          wrap,
         } = node;
 
         if (initialFunction) delete node.args;
@@ -111,10 +113,8 @@ export const transformer = (ast: AST) => {
         const alreadyDeclared = exists(newAst.curriedFns, node);
         if (alreadyDeclared) return;
 
-        if (defer) return;
-
         const isPipeExpression = exists(newAst.pipeExpressions, node);
-        if (isPipeExpression) {
+        if (isPipeExpression || defer || wrap) {
           node.disableAutoCurrying = true;
           return;
         }

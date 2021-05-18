@@ -16,6 +16,7 @@ export type Token = {
     | 'EmptyLine'
     | 'Variadic'
     | 'Flip'
+    | 'Wrap'
     | 'Defer';
   value?: string;
   level?: number;

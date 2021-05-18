@@ -1,6 +1,5 @@
 import {
   AST,
-
   DisableAutoCurrying,
   FlipArguments,
   FunctionStatement,
@@ -41,6 +40,7 @@ export const parser = (tokens: Token[]): AST => {
     let token = tokens[current];
     let negated = false;
     let defer = false;
+    let wrap = false;
 
     if (!token || token.type === 'EmptyLine') {
       currentLevel = 0;
@@ -136,6 +136,11 @@ export const parser = (tokens: Token[]): AST => {
       token = tokens[++current];
     }
 
+    if (token.type === 'Wrap') {
+      wrap = true;
+      token = tokens[++current];
+    }
+
     if (token.type === 'Defer') {
       defer = true;
       token = tokens[++current];
@@ -145,7 +150,7 @@ export const parser = (tokens: Token[]): AST => {
       token = tokens[++current];
 
       if (token.type !== 'Function') {
-        throw new Error('Invalid PipeStatement format');
+        throw new SyntaxError('Invalid PipeStatement format');
       }
 
       let pipeStatement: PipeStatement = {
@@ -175,26 +180,38 @@ export const parser = (tokens: Token[]): AST => {
         args: [],
         ...(negated && { negated }),
         ...(defer && { defer }),
+        ...(wrap && { wrap }),
       };
 
       negated = false;
       defer = false;
+      wrap = false;
 
       token = tokens[++current];
 
       while (token && token.type !== 'NewLine' && token.type !== 'EmptyLine') {
-        const args = walk() as
+        const functionSubNode = walk() as
           | NumberLiteral
           | StringLiteral
           | Variable
           | DisableAutoCurrying
           | FlipArguments;
-        if (args.type === 'DisableAutoCurrying') {
+
+        const { disableAutoCurrying, flipArguments, wrap }: any = fnNode;
+        const moreThanOneFlagActivated =
+          disableAutoCurrying + flipArguments + wrap > 1;
+        if (moreThanOneFlagActivated) {
+          throw new SyntaxError(
+            'Function with several special modifiers not supported',
+          );
+        }
+
+        if (functionSubNode.type === 'DisableAutoCurrying') {
           fnNode.disableAutoCurrying = true;
-        } else if (args.type === 'FlipArguments') {
+        } else if (functionSubNode.type === 'FlipArguments') {
           fnNode.flipArguments = true;
         } else {
-          args && fnNode.args.push(args);
+          functionSubNode && fnNode.args.push(functionSubNode);
         }
         token = tokens[current];
       }
@@ -295,7 +312,7 @@ export const parser = (tokens: Token[]): AST => {
       current++;
 
       return {
-        type: 'DisableAutoCurrying'
+        type: 'DisableAutoCurrying',
       };
     }
 
@@ -303,7 +320,7 @@ export const parser = (tokens: Token[]): AST => {
       current++;
 
       return {
-        type: 'FlipArguments'
+        type: 'FlipArguments',
       };
     }
 
@@ -311,7 +328,7 @@ export const parser = (tokens: Token[]): AST => {
       current++;
 
       return {
-        type: 'Defer'
+        type: 'Defer',
       };
     }
 
