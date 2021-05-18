@@ -10,7 +10,7 @@ describe('Compile: common cases', () => {
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Function', value: 'fnThree' },
@@ -35,7 +35,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, fnThree)();
         {
           type: 'PipeStatement',
           value: 'fnABC',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnA' },
             { type: 'Function', value: 'fnB' },
             { type: 'Function', value: 'fnC' },
@@ -45,7 +45,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, fnThree)();
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Function', value: 'fnThree' },
@@ -71,7 +71,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, fnThree)();
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Function', value: 'fnThree' },
@@ -97,7 +97,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, fnThree, x => x.toString())();
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'SideEffect', value: 'console.log' },
             { type: 'Function', value: 'fnTwo' },
@@ -122,7 +122,7 @@ ${runtimeNames.pipe}(fnOne, ${runtimeNames.sideEffect}(console.log), fnTwo)();
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'greaterThanZero', negated: true },
             { type: 'Function', value: 'fnTwo' },
@@ -147,7 +147,7 @@ ${runtimeNames.pipe}(fnOne, ${runtimeNames.negate}(greaterThanZero), fnTwo)();
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             {
               type: 'Function',
@@ -182,7 +182,7 @@ ${runtimeNames.pipe}(fnOne, __tube_curried_fnTwo('str1', 2, 'str3', var1), fnThr
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             {
@@ -221,7 +221,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, x => isA(x) ? (x => isB(x) ? (fn2aLevel)(x) :
         {
           type: 'PipeStatement',
           value: 'fnPipeA',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOneA' },
             { type: 'Function', value: 'fnTwoA' },
             { type: 'Function', value: 'fnThreeA' },
@@ -230,7 +230,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, x => isA(x) ? (x => isB(x) ? (fn2aLevel)(x) :
         {
           type: 'PipeStatement',
           value: 'fnPipeB',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOneB' },
             { type: 'Function', value: 'fnTwoB' },
             { type: 'Function', value: 'fnThreeB' },
@@ -240,7 +240,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, x => isA(x) ? (x => isB(x) ? (fn2aLevel)(x) :
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Method', value: 'methodOne' },
@@ -269,7 +269,7 @@ ${runtimeNames.pipe}(fnOne, fnTwo, x => isA(x) ? (x => isB(x) ? (fn2aLevel)(x) :
         },
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnEleven' },
             { type: 'Function', value: 'fnTwelve' },
           ],
@@ -298,7 +298,7 @@ ${runtimeNames.pipe}(fnEleven, fnTwelve)();
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             {
               type: 'Function',
@@ -307,7 +307,7 @@ ${runtimeNames.pipe}(fnEleven, fnTwelve)();
             },
             {
               type: 'UnionStatement',
-              childs: [
+              children: [
                 { type: 'Function', value: 'fnUnionA' },
                 { type: 'Function', value: 'fnUnionB' },
                 { type: 'Function', value: 'fnUnionC' },

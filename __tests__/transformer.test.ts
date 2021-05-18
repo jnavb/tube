@@ -5,11 +5,11 @@ describe('Transformer: common cases', () => {
   it('should transform a pipe invocation and a pipe composition', () => {
     const input: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeStatement',
           value: 'fnABC',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnA',
@@ -26,7 +26,7 @@ describe('Transformer: common cases', () => {
         },
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnOne',
@@ -57,7 +57,7 @@ describe('Transformer: common cases', () => {
         {
           type: 'PipeStatement',
           value: 'fnABC',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnA',
@@ -76,7 +76,7 @@ describe('Transformer: common cases', () => {
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnOne',
@@ -106,10 +106,10 @@ describe('Transformer: common cases', () => {
   it('should transform a pipe invocation with number arguments', () => {
     const input: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnOne',
@@ -155,7 +155,7 @@ describe('Transformer: common cases', () => {
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnOne',
@@ -195,15 +195,15 @@ describe('Transformer: common cases', () => {
   it('should transform a union statement', () => {
     const input: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne', initialFunction: true },
             { type: 'Function', value: 'fnTwo' },
             {
               type: 'UnionStatement',
-              childs: [
+              children: [
                 { type: 'Function', value: 'fnUnionOne' },
                 { type: 'Function', value: 'fnUnionTwo' },
                 { type: 'Function', value: 'fnUnionThree' },
@@ -223,7 +223,7 @@ describe('Transformer: common cases', () => {
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnOne',
@@ -235,7 +235,7 @@ describe('Transformer: common cases', () => {
             },
             {
               type: 'UnionStatement',
-              childs: [
+              children: [
                 {
                   type: 'Function',
                   value: 'fnUnionOne',
@@ -265,10 +265,10 @@ describe('Transformer: common cases', () => {
   it('should transform a method', () => {
     const input: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne', initialFunction: true },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Function', value: 'fnThree' },
@@ -286,7 +286,7 @@ describe('Transformer: common cases', () => {
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne', initialFunction: true },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Function', value: 'fnThree' },
@@ -302,10 +302,10 @@ describe('Transformer: common cases', () => {
   it('should transform a pipe with string arguments', () => {
     const input: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne', initialFunction: true },
             {
               type: 'Function',
@@ -339,7 +339,7 @@ describe('Transformer: common cases', () => {
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne', initialFunction: true },
             {
               type: 'Function',
@@ -362,10 +362,10 @@ describe('Transformer: common cases', () => {
   it('should transform a pipe with a side effect', () => {
     const input: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne', initialFunction: true },
             { type: 'SideEffect', value: 'sideEffectOne' },
             {
@@ -391,7 +391,7 @@ describe('Transformer: common cases', () => {
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne', initialFunction: true },
             { type: 'SideEffect', value: 'sideEffectOne' },
             {
@@ -410,10 +410,10 @@ describe('Transformer: common cases', () => {
   it('should transform a pipe with a switch block', () => {
     const input: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fn1', initialFunction: true },
             {
               type: 'SwitchStatement',
@@ -437,7 +437,7 @@ describe('Transformer: common cases', () => {
       pipeInvocations: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fn1', initialFunction: true },
             {
               type: 'SwitchStatement',
@@ -459,10 +459,10 @@ describe('Transformer: common cases', () => {
   it('should throw an error when is an unkown node type', () => {
     const input: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'UnkownNodeType' as any,
-          childs: [],
+          children: [],
         },
       ],
     };

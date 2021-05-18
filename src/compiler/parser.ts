@@ -12,6 +12,7 @@ import {
   SwitchCase,
   SwitchStatement,
   Token,
+  UnionStatement,
   Variable
 } from '../models';
 
@@ -26,12 +27,12 @@ export const parser = (tokens: Token[]): AST => {
 
   const ast: AST = {
     type: 'Program',
-    childs: [],
+    children: [],
   };
 
   while (current < tokens.length) {
     const child = walk();
-    child && ast.childs.push(child);
+    child && ast.children.push(child);
   }
 
   return ast;
@@ -60,9 +61,9 @@ export const parser = (tokens: Token[]): AST => {
         return null;
       }
 
-      const unionNode: any = {
+      const unionNode: UnionStatement = {
         type: 'UnionStatement',
-        childs: [],
+        children: [],
       };
 
       insideUnion = true;
@@ -74,7 +75,7 @@ export const parser = (tokens: Token[]): AST => {
         !(token?.type === 'NewLine' && token?.level !== unionLevel)
       ) {
         const node = walk();
-        node && unionNode.childs.push(node);
+        node && unionNode.children.push(node as FunctionStatement);
         token = tokens[current];
       }
 
@@ -156,7 +157,7 @@ export const parser = (tokens: Token[]): AST => {
       let pipeStatement: PipeStatement = {
         type: 'PipeStatement',
         value: token.value,
-        childs: [],
+        children: [],
       };
 
       insidePipeStatement = true;
@@ -164,7 +165,7 @@ export const parser = (tokens: Token[]): AST => {
 
       while (token && token.type !== 'EmptyLine') {
         const child = walk();
-        child && pipeStatement.childs.push(child);
+        child && pipeStatement.children.push(child);
         token = tokens[current];
       }
 
@@ -246,14 +247,14 @@ export const parser = (tokens: Token[]): AST => {
 
       let pipe: PipeInvocation = {
         type: 'PipeInvocation',
-        childs: [fnNode],
+        children: [fnNode],
       };
 
       insidePipeInvocation = true;
 
       while (token && token.type !== 'EmptyLine') {
         const child = walk();
-        child && pipe.childs.push(child);
+        child && pipe.children.push(child);
         token = tokens[current];
       }
 

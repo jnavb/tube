@@ -18,7 +18,7 @@ export const generator = ({
 }: TransformedAST) => {
   return _generator({
     type: 'Program',
-    childs: [...curriedFns, ...pipeExpressions, ...pipeInvocations],
+    children: [...curriedFns, ...pipeExpressions, ...pipeInvocations],
   });
 };
 
@@ -27,7 +27,7 @@ const _generator = (node: Node): string => {
 
   switch (node.type) {
     case 'Program':
-      return '\n' + node.childs.map(_generator).join('\n') + '\n';
+      return '\n' + node.children.map(_generator).join('\n') + '\n';
 
     case 'CurryStatement':
       return `const ${getNameOfFunctionCurried(node.value)} = ${
@@ -36,14 +36,14 @@ const _generator = (node: Node): string => {
 
     case 'PipeStatement':
       const leftHandSide = `const ${node.value}`;
-      const rightHandSide = `${runtimeNames.pipe}(${node.childs
+      const rightHandSide = `${runtimeNames.pipe}(${node.children
         .map(_generator)
         .join(', ')})`;
 
       return leftHandSide + ' = ' + rightHandSide + ';';
 
     case 'PipeInvocation':
-      const pipeIIPE = `${runtimeNames.pipe}(${node.childs
+      const pipeIIPE = `${runtimeNames.pipe}(${node.children
         .map(_generator)
         .join(', ')})`;
       const argWithParenthesis = '()';
@@ -101,7 +101,7 @@ const _generator = (node: Node): string => {
       return `${node.predicate}(x) ? ${node.value}(x)`;
 
     case 'UnionStatement':
-      return `${runtimeNames.union}(${node.childs.map(_generator).join(', ')})`;
+      return `${runtimeNames.union}(${node.children.map(_generator).join(', ')})`;
 
     case 'Number':
     case 'Variable':

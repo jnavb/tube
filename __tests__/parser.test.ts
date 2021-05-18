@@ -16,10 +16,10 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnOne',
@@ -57,10 +57,10 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             {
@@ -96,10 +96,10 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnOne',
@@ -112,7 +112,7 @@ describe('AST: common cases', () => {
         },
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnThree',
@@ -160,10 +160,10 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'state' },
             { type: 'Function', value: 'toSomething' },
             { type: 'Function', value: 'sum' },
@@ -205,10 +205,10 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fn1' },
             {
               type: 'Function',
@@ -267,10 +267,10 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fn1' },
             {
               type: 'SwitchStatement',
@@ -285,7 +285,7 @@ describe('AST: common cases', () => {
         },
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'allUppercase', negated: true },
             { type: 'Function', value: 'trace' },
             { type: 'SideEffect', value: 'console.log' },
@@ -319,10 +319,10 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnA',
@@ -338,7 +338,7 @@ describe('AST: common cases', () => {
         },
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnF' },
             { type: 'Function', value: 'fnG' },
           ],
@@ -375,10 +375,10 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnA',
@@ -406,7 +406,7 @@ describe('AST: common cases', () => {
         },
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnF' },
             { type: 'Function', value: 'fnG' },
           ],
@@ -434,11 +434,11 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeStatement',
           value: 'fnPipe',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Function', value: 'fnThree' },
@@ -475,11 +475,11 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeStatement',
           value: 'fnPipe',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Function', value: 'fnThree' },
@@ -488,7 +488,7 @@ describe('AST: common cases', () => {
         {
           type: 'PipeStatement',
           value: 'fnPipe',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Function', value: 'fnThree' },
@@ -523,11 +523,11 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeStatement',
           value: 'fnPipe',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             { type: 'Function', value: 'fnThree' },
@@ -535,7 +535,7 @@ describe('AST: common cases', () => {
         },
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnOne',
@@ -579,15 +579,15 @@ describe('AST: common cases', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             { type: 'Function', value: 'fnOne' },
             { type: 'Function', value: 'fnTwo' },
             {
               type: 'UnionStatement',
-              childs: [
+              children: [
                 { type: 'Function', value: 'fnUnionOne' },
                 { type: 'Function', value: 'fnUnionTwo' },
                 { type: 'Function', value: 'fnUnionThree' },
@@ -637,10 +637,10 @@ describe('AST: edge cases for NewLine and EmptyLine', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnOne',
@@ -659,10 +659,10 @@ describe('AST: edge cases for NewLine and EmptyLine', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnOne',
@@ -687,10 +687,10 @@ describe('AST: edge cases for NewLine and EmptyLine', () => {
     const result = parser(input);
     const expected: AST = {
       type: 'Program',
-      childs: [
+      children: [
         {
           type: 'PipeInvocation',
-          childs: [
+          children: [
             {
               type: 'Function',
               value: 'fnOne',

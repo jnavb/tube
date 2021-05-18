@@ -20,7 +20,7 @@ export type NodeType =
 export interface Node {
   type: NodeType;
   value?: string;
-  childs?: Node[];
+  children?: Node[];
   args?: (NumberLiteral | StringLiteral | Variable)[];
   negated?: boolean;
   if?: FunctionStatement;
@@ -38,17 +38,17 @@ export interface Node {
 
 export interface AST extends Node {
   type: 'Program';
-  childs: Node[];
+  children: Node[];
 }
 
 export interface PipeStatement extends Node {
   type: 'PipeStatement';
   value: string;
-  childs: Node[];
+  children: Node[];
 }
 export interface PipeInvocation extends Node {
   type: 'PipeInvocation';
-  childs: Node[];
+  children: Node[];
   arg?: NumberLiteral | StringLiteral | Variable;
 }
 
@@ -68,7 +68,7 @@ export interface FunctionStatement extends Node {
 
 export interface UnionStatement extends Node {
   type: 'UnionStatement';
-  childs: FunctionStatement[];
+  children: FunctionStatement[];
 }
 
 export interface Method extends Node {
