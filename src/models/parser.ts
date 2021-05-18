@@ -17,9 +17,12 @@ export type NodeType =
   | 'FlipArguments'
   | 'Wrap'
   | 'Defer';
+
+// TODO Improve node type
 export interface Node {
   type: NodeType;
   value?: string;
+  values?: string[];
   children?: Node[];
   args?: (NumberLiteral | StringLiteral | Variable)[];
   negated?: boolean;

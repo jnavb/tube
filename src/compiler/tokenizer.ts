@@ -1,30 +1,31 @@
 import { Token } from '../models';
+import {
+  ARGUMENT,
+  ARROW,
+  A_TO_Z_AND_DOT,
+  BREAK_LINE,
+  COLON,
+  DEFAULT,
+  DEFER,
+  DOUBLE_COLON,
+  FLIP,
+  NEGATION,
+  NEW_LINE,
+  NUMBERS_AND_DOT,
+  TAB,
+  UNION,
+  VARIADIC,
+  WHITESPACE,
+  WRAP
+} from '../models/keywords';
 
 export const tokenizer = (input: string): Token[] => {
-  let TAB = /\t/;
-  let WHITESPACE = /\s/;
-  let NEW_LINE = /(\r\n|\r|\n)/;
-  let COLON = /:/;
-  let DOUBLE_COLON = /::/;
-  let NUMBERS_AND_DOT = /[0-9\.]/;
-  let A_TO_Z_AND_DOT = /[a-z0-9\.$]/i;
-  let NEGATION = /^(isnt|arent|aint|negate|!)$/i;
-  let DEFAULT = /^(default|none)$/i;
-  let ARGUMENT = /^(each|than|with|without|for|between|by|at|to|until|and|or|below|under|on|since|ago|past|into|from|about|through|across|after)$/i;
-  let BREAK_LINE = '\r\n';
-  let ARROW = /->/;
-  let UNION = /U/;
-  let VARIADIC = /\.\.\.|ary/;
-  let FLIP = /flip$/;
-  let DEFER = /defer$/;
-  let WRAP = /wrap$/;
-
   let succedingFunctionTokens = new Set([
     'Function',
     'String',
     'Number',
     'Variable',
-    'Variadic'
+    'Variadic',
   ]);
 
   let level = 0;
@@ -46,7 +47,8 @@ export const tokenizer = (input: string): Token[] => {
 
       let twoLetterWord = char + nextChar;
       let threeLetterWord = char + nextChar + nextOfNextChar;
-      let fourLetterWord = char + nextChar + nextOfNextChar + nextOfNextCharOfNextChar;
+      let fourLetterWord =
+        char + nextChar + nextOfNextChar + nextOfNextCharOfNextChar;
 
       // Disable auto currying
       if (VARIADIC.test(threeLetterWord)) {
@@ -185,9 +187,7 @@ export const tokenizer = (input: string): Token[] => {
           char = input[++current];
         }
 
-        const type = DEFAULT.test(_case)
-          ? 'DefaultSwitchCase'
-          : 'SwitchCase';
+        const type = DEFAULT.test(_case) ? 'DefaultSwitchCase' : 'SwitchCase';
 
         tokens.push({
           type,
@@ -347,9 +347,7 @@ export const tokenizer = (input: string): Token[] => {
           argumentPos = tokens.length;
 
           continue;
-        } else if (
-          succedingFunctionTokens.has(LAST_TOKEN?.type)
-        ) {
+        } else if (succedingFunctionTokens.has(LAST_TOKEN?.type)) {
           tokens.push({
             type: 'Variable',
             value,

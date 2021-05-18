@@ -8,6 +8,7 @@ import {
   TransformedAST,
   Visitor
 } from '../models';
+import { AGREGGATOR } from '../models/keywords';
 
 const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
   traverseNode(node, parent);
@@ -64,7 +65,6 @@ const traverse = (visitor: Visitor) => (node: Node, parent?: Node) => {
       case 'SideEffect':
       case 'Variable':
       case 'Wrap':
-      case 'Aggregate':
         break;
 
       default:
@@ -114,8 +114,9 @@ export const transformer = (ast: AST) => {
         const alreadyDeclared = exists(newAst.curriedFns, node);
         if (alreadyDeclared) return;
 
+        const isAggregator = AGREGGATOR.test(node.value)
         const isPipeExpression = exists(newAst.pipeExpressions, node);
-        if (isPipeExpression || defer || wrap) {
+        if (isPipeExpression || defer || wrap || isAggregator) {
           node.disableAutoCurrying = true;
           return;
         }
