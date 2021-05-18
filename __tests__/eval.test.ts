@@ -771,4 +771,23 @@ defer createDate for '1995-12-17T03:24:00'
     expect(result).toStrictEqual(expected);
   });
 
+  it('evaluates a pipe with a function', () => {
+    const input = `
+state
+getArr1
+wrap Array
+`;
+
+    const compiledCode = compile(input);
+    const jsCode = `
+    Array(getArr1(state()))
+    `;
+
+    const result = eval(compiledCode);
+    const expected = eval(jsCode);
+
+    expect(result).toEqual([[1, 2, 3]]);
+    expect(result).toStrictEqual(expected);
+  });
+
 });

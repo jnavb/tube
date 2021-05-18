@@ -55,33 +55,38 @@ const _generator = (node: Node): string => {
       const { disableAutoCurrying } = node;
       args = node.args?.map(_generator).join(', ') || '';
       const argsWithParenthesis = args ? `(${args})` : '';
-      const deferFn = node.defer ? '() => ' : '';
+      const defer = node.defer
+        ? f => `() => ${f}`
+        : f => f;
+      const wrap = node.wrap
+        ? f => `y => ${f}(y)`
+        : f => f;
 
-      if (!args || disableAutoCurrying || node.defer) {
-        fn = `${deferFn}${node.value}${argsWithParenthesis}`;
+      if (!args || disableAutoCurrying) {
+        fn = `${node.value}${argsWithParenthesis}`;
       } else {
-        fn = `${deferFn}${getNameOfFunctionCurried(
+        fn = `${getNameOfFunctionCurried(
           node.value,
         )}${argsWithParenthesis}`;
       }
 
       if (node.negated) {
-        fn = `${deferFn}${runtimeNames.negate}(${fn})`;
+        fn = `${runtimeNames.negate}(${fn})`;
       }
 
       if (node.else) {
-        fn = `${deferFn}x => ${fn}(x) ? (${_generator(
+        fn = `x => ${fn}(x) ? (${_generator(
           node.if,
         )})(x) : (${_generator(node.else)})(x)`;
       } else if (node.if) {
-        fn = `${deferFn}x => ${fn}(x) ? (${_generator(node.if)})(x) : x`;
+        fn = `x => ${fn}(x) ? (${_generator(node.if)})(x) : x`;
       } else if (node.flipArguments) {
-        fn = `${deferFn}x => ${getNameOfFunctionCurried(
+        fn = `x => ${getNameOfFunctionCurried(
           node.value,
         )}(x)${argsWithParenthesis}`;
       }
 
-      return fn;
+      return wrap(defer(fn));
 
     case 'SwitchStatement':
       const cases = node.cases.map(_generator).join(' : ');

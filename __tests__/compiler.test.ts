@@ -402,4 +402,30 @@ __tube_lang__.pipe(qwer(var1))();
 
     expect(result).toEqual(expected);
   });
+
+  it('compiles a wrap function', () => {
+    const input = `
+wrap fnOne
+`;
+
+    const result = compile(input);
+    const expected = `
+__tube_lang__.pipe(y => fnOne(y))();
+`;
+
+    expect(result).toEqual(expected);
+  });
+
+  it('compiles a wrap function with an argument', () => {
+    const input = `
+wrap fnOne var1
+`;
+
+    const result = compile(input);
+    const expected = `
+__tube_lang__.pipe(y => fnOne(var1)(y))();
+`;
+
+    expect(result).toEqual(expected);
+  });
 });

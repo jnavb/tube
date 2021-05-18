@@ -17,6 +17,7 @@ export const tokenizer = (input: string): Token[] => {
   let VARIADIC = /\.\.\.|ary/;
   let FLIP = /flip$/;
   let DEFER = /defer$/;
+  let WRAP = /wrap$/;
 
   let succedingFunctionTokens = new Set([
     'Function',
@@ -337,6 +338,10 @@ export const tokenizer = (input: string): Token[] => {
         } else if (DEFER.test(value)) {
           tokens.push({
             type: 'Defer',
+          });
+        } else if (WRAP.test(value)) {
+          tokens.push({
+            type: 'Wrap',
           });
         } else if (ARGUMENT.test(value)) {
           argumentPos = tokens.length;
