@@ -5,7 +5,7 @@
   <img src="assets/logo.png" alt="tube-logo" width="120px" height="120px"/>
   <br>
   <br>
-Tube is a declarative, completely unneeded, functionalish language that compiles into Javascript.
+Tube is a declarative, completely unneeded, functionalish language that transpiles into Javascript.
   <br>
   <br>
 </p>
