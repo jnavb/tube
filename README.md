@@ -46,29 +46,6 @@ const compiledTubeCode = compile(tubeCode)
 eval(compiledTubeCode) // Hello World!
 ```
 
-## Roadmap
-
-### April 2021
-
-:white_check_mark:  Compiler
-
-:white_check_mark:  Test coverage 100%
-
-### May 2021
-
-:white_check_mark:  NPM package
-
-:white_check_mark:  Web Editor 
-
-### TBD
-:black_square_button: Right Left for handling errors
-
-:black_square_button: Switch clauses with arguments
-
-:black_square_button: Async support via keywords
-
-:black_square_button: Comments
-
 
 [ts-badge]: https://img.shields.io/badge/TypeScript-4.2-blue.svg
 [nodejs-badge]: https://img.shields.io/badge/Node.js->=%2014.16-blue.svg
